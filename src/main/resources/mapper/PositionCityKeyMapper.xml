@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.PositionCityKeyMapper">
+    
+    <resultMap id="myDefine1" type="com.jhon.recruitmentanalysis.pojo.PositionCityKeyVo">
+        <result property="name" column="POSITION"/>
+        <result property="value" column="CITY_COUNT"/>
+    </resultMap>
+
+    <resultMap id="myDefine2" type="com.jhon.recruitmentanalysis.pojo.PositionCityKeyVo">
+        <result property="name" column="CITY"/>
+        <result property="value" column="POSITION_COUNT"/>
+    </resultMap>
+    
+    <select id="findAllPositionCityKey" resultType="com.jhon.recruitmentanalysis.pojo.PositionCityKey">
+        SELECT
+        CAST(CITY AS VARCHAR) AS CITY,COUNT(CAST(CITY AS VARCHAR)) AS POSITION_COUNT
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        GROUP BY CAST(CITY AS VARCHAR)
+        HAVING CAST(CITY AS VARCHAR) != ''
+        ORDER BY 2 DESC
+        <if test="limit != null">
+            LIMIT #{limit};
+        </if>
+    </select>
+
+    <select id="postFindAllPositionCityKey" resultType="com.jhon.recruitmentanalysis.pojo.PositionCityKey">
+        SELECT
+        CAST(CITY AS VARCHAR) AS CITY,COUNT(CAST(CITY AS VARCHAR)) AS POSITION_COUNT
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        GROUP BY CAST(CITY AS VARCHAR)
+        HAVING CAST(CITY AS VARCHAR) != ''
+        AND
+        CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        ORDER BY 2 DESC
+        <if test="limit != null">
+            LIMIT #{limit};
+        </if>
+    </select>
+
+    <select id="getAllPositionCityKey" resultMap="myDefine2">
+        SELECT
+            CAST(CITY AS VARCHAR) AS CITY,COUNT(CAST(CITY AS VARCHAR)) AS POSITION_COUNT
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        GROUP BY CAST(CITY AS VARCHAR)
+        HAVING CAST(CITY AS VARCHAR) != '';
+    </select>
+
+    <select id="postGetAllPositionCityKey" resultMap="myDefine2">
+        SELECT
+        CAST(CITY AS VARCHAR) AS CITY,COUNT(CAST(CITY AS VARCHAR)) AS POSITION_COUNT
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        GROUP BY CAST(CITY AS VARCHAR)
+        HAVING CAST(CITY AS VARCHAR) != ''
+        AND CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>;
+    </select>
+
+    <select id="getAllPositionCity" resultMap="myDefine1">
+        SELECT
+        CAST(POSITION AS VARCHAR) AS POSITION,COUNT(DISTINCT(CAST(CITY AS VARCHAR))) AS CITY_COUNT
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        GROUP BY CAST(POSITION AS VARCHAR)
+        HAVING CAST(POSITION AS VARCHAR) != ''
+        ORDER BY 2 DESC
+        <if test="limit != null">
+            LIMIT #{limit};
+        </if>
+    </select>
+
+    <select id="postGetAllPositionCity" resultMap="myDefine1">
+        SELECT
+        CAST(POSITION AS VARCHAR) AS POSITION,COUNT(DISTINCT(CAST(CITY AS VARCHAR))) AS CITY_COUNT
+        FROM
+        (SELECT
+        POSITION,CITY
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        WHERE CITY IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        ) T
+        GROUP BY CAST(T.POSITION AS VARCHAR)
+        HAVING CAST(POSITION AS VARCHAR) != ''
+        ORDER BY 2 DESC
+        <if test="limit != null">
+            LIMIT #{limit};
+        </if>
+    </select>
+
+    <select id="getKey" resultType="string">
+        SELECT
+            KEY
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        WHERE POSITION = '${position}';
+    </select>
+
+    <select id="getAllKey" resultType="string">
+        SELECT
+            KEY
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+    </select>
+
+</mapper>

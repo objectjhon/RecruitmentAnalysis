@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.JobOnlinePayMinMaxAvgMapper">
+    <select id="findAllJobOnlinePayMinMaxAvg" resultType="com.jhon.recruitmentanalysis.pojo.JobOnlinePayMinMaxAvg">
+        SELECT
+            POSITION,PAY_MAX_AVG+PAY_MIN_AVG/2 AS PAY_AVG
+        FROM "recruitment_analysis"."JOB_ONLINE_PAY_MIN_MAX_AVG"
+        <if test="limit != null">
+            LIMIT #{limit};
+        </if>
+    </select>
+    <select id="postFindAllJobOnlinePayMinMaxAvg" resultType="com.jhon.recruitmentanalysis.pojo.JobOnlinePayMinMaxAvg">
+        SELECT
+        DISTINCT(CAST(A.POSITION AS VARCHAR)) AS POSITION,A.PAY_MIN_AVG+A.PAY_MAX_AVG/2 AS PAY_AVG
+        FROM
+        "recruitment_analysis"."JOB_ONLINE_PAY_MIN_MAX_AVG" A, "recruitment_analysis"."POSITION_CITY_KEY" B
+        WHERE
+        A.POSITION = CAST(B.POSITION AS VARCHAR) AND B.CITY IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        <if test="limit != null">
+            LIMIT #{limit};
+        </if>
+    </select>
+</mapper>

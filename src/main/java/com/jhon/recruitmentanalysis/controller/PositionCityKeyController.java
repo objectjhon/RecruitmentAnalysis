@@ -130,8 +130,6 @@ public class PositionCityKeyController {
 
         List<PositionCityKeyVo> allPositionCity;
 
-        System.out.println("-----"+limit);
-
         if (city != null){
 
             allPositionCity = positionCityKeyService.postGetAllPositionCity(limit, city);

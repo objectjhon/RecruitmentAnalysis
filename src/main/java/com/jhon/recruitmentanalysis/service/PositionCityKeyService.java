@@ -2,7 +2,6 @@ package com.jhon.recruitmentanalysis.service;
 
 import com.jhon.recruitmentanalysis.pojo.PositionCityKey;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKeyVo;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -25,5 +24,7 @@ public interface PositionCityKeyService {
     Map<String,Integer> getKey(String position);
 
     Map<String,Integer> getAllKey();
+
+    Map<String,Integer> getAllKey(List<String> city);
 
 }

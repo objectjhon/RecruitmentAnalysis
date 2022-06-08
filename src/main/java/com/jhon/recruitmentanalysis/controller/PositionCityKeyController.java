@@ -1,5 +1,6 @@
 package com.jhon.recruitmentanalysis.controller;
 
+import com.jhon.recruitmentanalysis.pojo.JobOnlinePositionCount;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKey;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKeyPo;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKeyVo;
@@ -183,6 +184,37 @@ public class PositionCityKeyController {
         percentMap.put("allKeyPercent",positionCityKeyVoList);
 
         return R.ok().message("查询成功").data(percentMap);
+    }
+
+    // 根据城市查询关键字及个数
+    @PostMapping("/getKeyAndVal")
+    public R getAllKey(@RequestParam(value = "city",required = false) ArrayList<String> city){
+
+        Map<String,Integer> allKeysMap;
+
+        List<Object> keysList = new ArrayList<>();
+
+        if (city != null) {
+
+            allKeysMap = positionCityKeyService.getAllKey(city);
+
+        } else {
+
+            allKeysMap = positionCityKeyService.getAllKey();
+
+        }
+
+        for (Map.Entry<String, Integer> stringIntegerEntry : allKeysMap.entrySet()) {
+            String str[] = {stringIntegerEntry.getKey(),stringIntegerEntry.getValue()+""};
+            keysList.add(str);
+        }
+
+        Map<String,Object> map = new LinkedHashMap<>();
+
+        map.put("keysList", keysList);
+
+        return R.ok().message("查询成功").data(map);
+
     }
     
 }

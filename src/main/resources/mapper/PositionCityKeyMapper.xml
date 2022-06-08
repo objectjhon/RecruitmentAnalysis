@@ -106,4 +106,14 @@
         FROM "recruitment_analysis"."POSITION_CITY_KEY"
     </select>
 
+    <select id="getAllKeyByCity" resultType="string">
+        SELECT
+            KEY
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        WHERE CITY IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>;
+    </select>
+
 </mapper>

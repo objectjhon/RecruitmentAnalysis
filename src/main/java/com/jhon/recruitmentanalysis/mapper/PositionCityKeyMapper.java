@@ -24,4 +24,6 @@ public interface PositionCityKeyMapper {
 
     String[] getAllKey();
 
+    String[] getAllKeyByCity(@Param("city") List<String> city);
+
 }

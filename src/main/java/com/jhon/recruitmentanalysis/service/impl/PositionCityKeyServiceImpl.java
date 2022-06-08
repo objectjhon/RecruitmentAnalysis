@@ -50,7 +50,7 @@ public class PositionCityKeyServiceImpl implements PositionCityKeyService {
 
     @Override
     public Map<String,Integer> getKey(String position) {
-        String Keys[] = positionCityKeyMapper.getKey(position);
+        String[] Keys = positionCityKeyMapper.getKey(position);
         List<String> keysList = new ArrayList<>();
         for (String key : Keys) {
             for (String s : key.split(" ")) {
@@ -69,7 +69,7 @@ public class PositionCityKeyServiceImpl implements PositionCityKeyService {
 
     @Override
     public Map<String,Integer> getAllKey() {
-        String allKeys[] = positionCityKeyMapper.getAllKey();
+        String[] allKeys = positionCityKeyMapper.getAllKey();
         List<String> allKeysList = new ArrayList<>();
         for (String allKey : allKeys) {
             for (String s : allKey.split(" ")) {
@@ -84,6 +84,25 @@ public class PositionCityKeyServiceImpl implements PositionCityKeyService {
             allKeysMap.put(s, (count == null) ? 1 : count + 1);
         }
         return allKeysMap;
+    }
+
+    @Override
+    public Map<String, Integer> getAllKey(List<String> city) {
+        String[] allKeyByCity = positionCityKeyMapper.getAllKeyByCity(city);
+        List<String> allKeyValList = new ArrayList<>();
+        for (String s : allKeyByCity) {
+            for (String s1 : s.split(" ")) {
+                if (!s1.equals("")){
+                    allKeyValList.add(s1);
+                }
+            }
+        }
+        Map<String,Integer> allKeyValMap = new HashMap<>();
+        for (String s : allKeyValList) {
+            Integer count = allKeyValMap.get(s);
+            allKeyValMap.put(s, (count == null) ? 1 : count + 1);
+        }
+        return allKeyValMap;
     }
 
 }

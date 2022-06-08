@@ -23,4 +23,28 @@
         GROUP BY T.POSITION
         ORDER BY POSITION_COUNT DESC;
     </select>
+    <select id="getHighestPositionCount" resultType="com.jhon.recruitmentanalysis.pojo.JobOnlinePositionCount">
+        SELECT TOP 1
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
+        FROM "recruitment_analysis".POSITION_CITY_KEY
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY POSITION_COUNT DESC
+    </select>
+    <select id="getHighestPositionCountByCity" resultType="com.jhon.recruitmentanalysis.pojo.JobOnlinePositionCount">
+        SELECT TOP 1
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
+        FROM
+        (
+            SELECT POSITION,CITY
+            FROM "recruitment_analysis".POSITION_CITY_KEY
+            WHERE CAST(CITY AS VARCHAR) IN
+            <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+                #{city}
+            </foreach>
+        )
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY POSITION_COUNT DESC
+    </select>
 </mapper>

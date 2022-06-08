@@ -38,7 +38,7 @@ public class JobOnlinePositionCountController {
     }
 
     @PostMapping("/findAllJobOnlinePositionCount")
-    public R postFindAllJobOnlinePositionCount(@RequestBody(required = false) List<String> city){
+    public R postFindAllJobOnlinePositionCount(@RequestParam(value = "city",required = false) List<String> city){
 
         List<JobOnlinePositionCount> allJobOnlinePositionCount;
 
@@ -68,6 +68,29 @@ public class JobOnlinePositionCountController {
         map.put("allJobOnlinePositionCount",mapList);
 
         return R.ok().message("查询成功").data(map);
+    }
+
+    @PostMapping("/getHighestPositionCount")
+    public R getHighestPositionCount(@RequestParam(value = "city",required = false) List<String> city){
+
+        JobOnlinePositionCount jobOnlinePositionCount;
+
+        if (city != null){
+
+            jobOnlinePositionCount = jobOnlinePositionCountService.getHighestPositionCount(city);
+
+        } else {
+
+            jobOnlinePositionCount = jobOnlinePositionCountService.getHighestPositionCount();
+
+        }
+
+        Map<String,Object> map = new LinkedHashMap<>();
+
+        map.put("jobOnlinePositionCount", jobOnlinePositionCount);
+
+        return R.ok().message("查询成功").data(map);
+
     }
 
 }

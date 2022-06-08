@@ -47,9 +47,11 @@ public class JobOnlinePayController {
 
     @PostMapping("/findAllJobOnlinePay")
     public R postFindAllJobOnlinePay(@RequestParam(value = "limit", required = false) Integer limit,
-                                     @RequestBody(required = false) List<String> city){
+                                     @RequestParam(value = "city",required = false) List<String> city){
 
         List<JobOnlinePay> allJobOnlinePay;
+
+        System.out.println(city);
 
         if (city != null){
 

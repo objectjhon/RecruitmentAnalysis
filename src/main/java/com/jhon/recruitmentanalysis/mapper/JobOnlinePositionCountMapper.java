@@ -12,4 +12,8 @@ public interface JobOnlinePositionCountMapper {
 
     List<JobOnlinePositionCount> postFindAllJobOnlinePositionCount(@Param("city") List<String> city);
 
+    JobOnlinePositionCount getHighestPositionCount();
+
+    JobOnlinePositionCount getHighestPositionCountByCity(@Param("city") List<String> city);
+
 }

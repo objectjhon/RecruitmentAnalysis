@@ -10,4 +10,8 @@ public interface JobOnlinePositionCountService {
 
     List<JobOnlinePositionCount> postFindAllJobOnlinePositionCount(List<String> city);
 
+    JobOnlinePositionCount getHighestPositionCount();
+
+    JobOnlinePositionCount getHighestPositionCount(List<String> city);
+
 }

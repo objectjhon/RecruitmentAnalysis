@@ -43,7 +43,7 @@ public class JobOnlinePayMinMaxController {
 
     @PostMapping("/findAllJobOnlinePayMinMax")
     public R postFindAllJobOnlinePayMinMax(@RequestParam(value = "limit", required = false) Integer limit,
-                                           @RequestBody(required = false) List<String> city){
+                                           @RequestParam(value = "city",required = false) List<String> city){
 
         List<JobOnlinePayMinMax> allJobOnlinePayMinMax;
 

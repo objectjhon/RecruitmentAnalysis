@@ -24,4 +24,14 @@ public class JobOnlinePositionCountServiceImpl implements JobOnlinePositionCount
         return jobOnlinePositionCountMapper.postFindAllJobOnlinePositionCount(city);
     }
 
+    @Override
+    public JobOnlinePositionCount getHighestPositionCount() {
+        return jobOnlinePositionCountMapper.getHighestPositionCount();
+    }
+
+    @Override
+    public JobOnlinePositionCount getHighestPositionCount(List<String> city) {
+        return jobOnlinePositionCountMapper.getHighestPositionCountByCity(city);
+    }
+
 }

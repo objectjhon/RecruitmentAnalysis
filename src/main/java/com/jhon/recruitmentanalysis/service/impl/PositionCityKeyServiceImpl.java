@@ -1,6 +1,7 @@
 package com.jhon.recruitmentanalysis.service.impl;
 
 import com.jhon.recruitmentanalysis.mapper.PositionCityKeyMapper;
+import com.jhon.recruitmentanalysis.pojo.CityCount;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKey;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKeyVo;
 import com.jhon.recruitmentanalysis.service.PositionCityKeyService;
@@ -103,6 +104,16 @@ public class PositionCityKeyServiceImpl implements PositionCityKeyService {
             allKeyValMap.put(s, (count == null) ? 1 : count + 1);
         }
         return allKeyValMap;
+    }
+
+    @Override
+    public CityCount getHighestCityCount() {
+        return positionCityKeyMapper.getHighestCityCount();
+    }
+
+    @Override
+    public CityCount getHighestCityCount(List<String> city) {
+        return positionCityKeyMapper.postGetHighestCityCount(city);
     }
 
 }

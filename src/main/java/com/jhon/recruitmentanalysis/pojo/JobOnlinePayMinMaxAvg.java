@@ -8,8 +8,6 @@ import lombok.ToString;
 public class JobOnlinePayMinMaxAvg {
 
     private String position;
-//    private double payMinAvg;
-//    private double payMaxAvg;
     private double payAvg;
 
 }

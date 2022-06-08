@@ -106,4 +106,45 @@
         FROM "recruitment_analysis"."POSITION_CITY_KEY"
     </select>
 
+    <select id="getAllKeyByCity" resultType="string">
+        SELECT
+            KEY
+        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        WHERE CITY IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>;
+    </select>
+
+    <select id="getHighestCityCount" resultType="com.jhon.recruitmentanalysis.pojo.CityCount">
+        SELECT TOP 1
+        CITY,COUNT(CITY) AS COUNT FROM
+            (
+            SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION,CAST(CITY AS VARCHAR) AS CITY
+            FROM "recruitment_analysis".POSITION_CITY_KEY
+            GROUP BY CAST(CITY AS VARCHAR),CAST(POSITION AS VARCHAR)
+            )
+        GROUP BY CITY
+        HAVING CITY !=''
+        ORDER BY COUNT DESC
+    </select>
+
+    <select id="postGetHighestCityCount" resultType="com.jhon.recruitmentanalysis.pojo.CityCount">
+        SELECT TOP 1
+        CITY,COUNT(CITY) AS COUNT FROM
+            (
+            SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION,CAST(CITY AS VARCHAR) AS CITY
+            FROM "recruitment_analysis".POSITION_CITY_KEY
+            GROUP BY CAST(CITY AS VARCHAR),CAST(POSITION AS VARCHAR)
+            )
+        GROUP BY CITY
+        HAVING CITY !='' AND CITY IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        ORDER BY COUNT DESC;
+    </select>
+
 </mapper>

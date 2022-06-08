@@ -1,9 +1,6 @@
 package com.jhon.recruitmentanalysis.controller;
 
-import com.jhon.recruitmentanalysis.pojo.JobOnlinePositionCount;
-import com.jhon.recruitmentanalysis.pojo.PositionCityKey;
-import com.jhon.recruitmentanalysis.pojo.PositionCityKeyPo;
-import com.jhon.recruitmentanalysis.pojo.PositionCityKeyVo;
+import com.jhon.recruitmentanalysis.pojo.*;
 import com.jhon.recruitmentanalysis.service.PositionCityKeyService;
 import com.jhon.recruitmentanalysis.util.R;
 import org.springframework.web.bind.annotation.*;
@@ -215,6 +212,29 @@ public class PositionCityKeyController {
 
         return R.ok().message("查询成功").data(map);
 
+    }
+
+    // 当前区域招聘岗位数量最多的城市
+    @PostMapping("/getHighestCityCount")
+    public R getHighestCityCount(@RequestParam(value = "city",required = false) ArrayList<String> city){
+
+        CityCount highestCityCount;
+
+        if (city != null) {
+
+            highestCityCount = positionCityKeyService.getHighestCityCount(city);
+
+        } else {
+
+            highestCityCount = positionCityKeyService.getHighestCityCount();
+
+        }
+
+        Map<String,Object> map = new LinkedHashMap<>();
+
+        map.put("highestCityCount",highestCityCount);
+
+        return R.ok().message("查询成功").data(map);
     }
     
 }

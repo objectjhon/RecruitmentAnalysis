@@ -1,5 +1,6 @@
 package com.jhon.recruitmentanalysis.mapper;
 
+import com.jhon.recruitmentanalysis.pojo.CityCount;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKey;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKeyVo;
 import org.apache.ibatis.annotations.Param;
@@ -25,5 +26,9 @@ public interface PositionCityKeyMapper {
     String[] getAllKey();
 
     String[] getAllKeyByCity(@Param("city") List<String> city);
+
+    CityCount getHighestCityCount();
+
+    CityCount postGetHighestCityCount(@Param("city") List<String> city);
 
 }

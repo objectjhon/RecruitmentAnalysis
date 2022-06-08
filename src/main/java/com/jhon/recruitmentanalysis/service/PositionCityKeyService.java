@@ -1,5 +1,6 @@
 package com.jhon.recruitmentanalysis.service;
 
+import com.jhon.recruitmentanalysis.pojo.CityCount;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKey;
 import com.jhon.recruitmentanalysis.pojo.PositionCityKeyVo;
 
@@ -26,5 +27,9 @@ public interface PositionCityKeyService {
     Map<String,Integer> getAllKey();
 
     Map<String,Integer> getAllKey(List<String> city);
+
+    CityCount getHighestCityCount();
+
+    CityCount getHighestCityCount(List<String> city);
 
 }

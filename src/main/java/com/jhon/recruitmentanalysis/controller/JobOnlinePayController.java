@@ -23,6 +23,8 @@ public class JobOnlinePayController {
     public R findAllJobOnlinePay(@RequestParam(value = "limit", required = false) Integer limit){
         List<JobOnlinePay> allJobOnlinePay = jobOnlinePayService.findAllJobOnlinePay(limit);
 
+        System.out.println("----"+limit);
+
         List<Object> allJobOnlinePayList = new ArrayList<>();
 
         for (JobOnlinePay jobOnlinePay : allJobOnlinePay) {
@@ -47,9 +49,11 @@ public class JobOnlinePayController {
 
     @PostMapping("/findAllJobOnlinePay")
     public R postFindAllJobOnlinePay(@RequestParam(value = "limit", required = false) Integer limit,
-                                     @RequestParam(value = "city",required = false) List<String> city){
+                                     @RequestParam(value = "city",required = false) ArrayList<String> city){
 
         List<JobOnlinePay> allJobOnlinePay;
+
+        System.out.println("-----"+limit);
 
         System.out.println(city);
 

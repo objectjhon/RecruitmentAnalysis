@@ -40,9 +40,11 @@ public class PositionCityKeyController {
 
     @PostMapping("/findAllPositionCityKey")
     public R postFindAllPositionCityKey(@RequestParam(value = "limit", required = false) Integer limit,
-                                        @RequestBody(required = false) List<String> city){
+                                        @RequestParam(value = "city",required = false) ArrayList<String> city){
 
         List<PositionCityKey> allPositionCityKey;
+
+        System.out.println("-----"+limit);
 
         if (city != null){
 
@@ -82,7 +84,7 @@ public class PositionCityKeyController {
     }
 
     @PostMapping("/getAllPositionCityKey")
-    public R postGetAllPositionCityKey(@RequestBody(required = false) List<String> city){
+    public R postGetAllPositionCityKey(@RequestParam(value = "city",required = false) ArrayList<String> city){
         List<PositionCityKeyVo> allPositionCityKeyVo;
 
         if (city != null){
@@ -124,9 +126,11 @@ public class PositionCityKeyController {
 
     @PostMapping("/getAllPositionCity")
     public R postGetAllPositionCity(@RequestParam(value = "limit", required = false) Integer limit,
-                                    @RequestBody(required = false) List<String> city){
+                                    @RequestParam(value = "city",required = false) ArrayList<String> city){
 
         List<PositionCityKeyVo> allPositionCity;
+
+        System.out.println("-----"+limit);
 
         if (city != null){
 

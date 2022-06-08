@@ -38,7 +38,7 @@ public class JobOnlinePositionCountController {
     }
 
     @PostMapping("/findAllJobOnlinePositionCount")
-    public R postFindAllJobOnlinePositionCount(@RequestParam(value = "city",required = false) List<String> city){
+    public R postFindAllJobOnlinePositionCount(@RequestParam(value = "city",required = false) ArrayList<String> city){
 
         List<JobOnlinePositionCount> allJobOnlinePositionCount;
 
@@ -71,7 +71,7 @@ public class JobOnlinePositionCountController {
     }
 
     @PostMapping("/getHighestPositionCount")
-    public R getHighestPositionCount(@RequestParam(value = "city",required = false) List<String> city){
+    public R getHighestPositionCount(@RequestParam(value = "city",required = false) ArrayList<String> city){
 
         JobOnlinePositionCount jobOnlinePositionCount;
 

@@ -3,28 +3,24 @@
 <mapper namespace="com.jhon.recruitmentanalysis.mapper.JobOnlinePayMapper">
     <select id="findAllJobOnlinePay" resultType="com.jhon.recruitmentanalysis.pojo.JobOnlinePay">
         SELECT
-        A.POSITION,A.PAY_MAX,A.PAY_MIN,B.PAY_MAX_AVG+B.PAY_MIN_AVG/2 AS PAY_AVG
-        FROM "recruitment_analysis".JOB_ONLINE_PAY_MIN_MAX A,
-        "recruitment_analysis".JOB_ONLINE_PAY_MIN_MAX_AVG B
-        WHERE A.POSITION = CAST(B.POSITION AS VARCHAR)
-        ORDER BY A.PAY_MAX DESC
+        POSITION,PAY_MAX,PAY_MIN,PAY_MAX+PAY_MIN/2 AS PAY_AVG
+        FROM "RECRUITMENT_ANALYSIS".PAY_MIN_MAX
+        ORDER BY PAY_MAX DESC
          <if test="limit != null">
              LIMIT #{limit};
          </if>
     </select>
     <select id="postFindAllJobOnlinePay" resultType="com.jhon.recruitmentanalysis.pojo.JobOnlinePay">
         SELECT
-            DISTINCT(CAST(A.POSITION AS VARCHAR)) AS POSITION,A.PAY_MAX,A.PAY_MIN,B.PAY_MAX_AVG+B.PAY_MIN_AVG/2 AS PAY_AVG
-        FROM "recruitment_analysis".JOB_ONLINE_PAY_MIN_MAX A,
-            "recruitment_analysis".JOB_ONLINE_PAY_MIN_MAX_AVG B,
-            "recruitment_analysis".POSITION_CITY_KEY C
+            DISTINCT(CAST(A.POSITION AS VARCHAR)) AS POSITION,A.PAY_MAX,A.PAY_MIN,A.PAY_MAX+A.PAY_MIN/2 AS PAY_AVG
+        FROM "RECRUITMENT_ANALYSIS".PAY_MIN_MAX A,
+            "RECRUITMENT_ANALYSIS".POSITION_CITY_KEY B
         WHERE
             A.POSITION = CAST(B.POSITION AS VARCHAR) AND
-            A.POSITION = CAST(C.POSITION AS VARCHAR) AND
-            C.CITY IN
-        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
-            #{city}
-        </foreach>
+            B.CITY IN
+            <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+                #{city}
+            </foreach>
         ORDER BY A.PAY_MAX DESC
         <if test="limit != null">
             LIMIT #{limit};

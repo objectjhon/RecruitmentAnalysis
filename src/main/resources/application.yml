@@ -1,18 +1,10 @@
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-##    url: jdbc:mysql://www.partitioner.cn:3306/recruitment_analysis?useUnicode=true&characterEncoding=UTF-8
-#    username: root
-#    password: 123456
-#    url: jdbc:mysql://localhost:3306/sampledb?useUnicode=true&characterEncoding=UTF-8
-
 server:
   port: 8888
 
 spring:
   datasource:
     driverClassName: dm.jdbc.driver.DmDriver
-    url: jdbc:dm://localhost:5234
+    url: jdbc:dm://www.jhon.top:5236
     username: SYSDBA
     password: SYSDBA
     druid:
@@ -20,6 +12,7 @@ spring:
       username: ${spring.datasource.username}
       password: ${spring.datasource.password}
       driver-class-name: ${spring.datasource.driverClassName}
+      test-while-idle: false
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

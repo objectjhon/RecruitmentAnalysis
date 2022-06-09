@@ -202,8 +202,10 @@ public class PositionCityKeyController {
         }
 
         for (Map.Entry<String, Integer> stringIntegerEntry : allKeysMap.entrySet()) {
-            String str[] = {stringIntegerEntry.getKey(),stringIntegerEntry.getValue()+""};
-            keysList.add(str);
+            PositionCityKeyVo positionCityKeyVo = new PositionCityKeyVo();
+            positionCityKeyVo.setName(stringIntegerEntry.getKey());
+            positionCityKeyVo.setValue(stringIntegerEntry.getValue());
+            keysList.add(positionCityKeyVo);
         }
 
         Map<String,Object> map = new LinkedHashMap<>();

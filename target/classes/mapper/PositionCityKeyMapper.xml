@@ -15,7 +15,7 @@
     <select id="findAllPositionCityKey" resultType="com.jhon.recruitmentanalysis.pojo.PositionCityKey">
         SELECT
         CAST(CITY AS VARCHAR) AS CITY,COUNT(CAST(CITY AS VARCHAR)) AS POSITION_COUNT
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
         GROUP BY CAST(CITY AS VARCHAR)
         HAVING CAST(CITY AS VARCHAR) != ''
         ORDER BY 2 DESC
@@ -27,7 +27,7 @@
     <select id="postFindAllPositionCityKey" resultType="com.jhon.recruitmentanalysis.pojo.PositionCityKey">
         SELECT
         CAST(CITY AS VARCHAR) AS CITY,COUNT(CAST(CITY AS VARCHAR)) AS POSITION_COUNT
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
         GROUP BY CAST(CITY AS VARCHAR)
         HAVING CAST(CITY AS VARCHAR) != ''
         AND
@@ -44,7 +44,7 @@
     <select id="getAllPositionCityKey" resultMap="myDefine2">
         SELECT
             CAST(CITY AS VARCHAR) AS CITY,COUNT(CAST(CITY AS VARCHAR)) AS POSITION_COUNT
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
         GROUP BY CAST(CITY AS VARCHAR)
         HAVING CAST(CITY AS VARCHAR) != '';
     </select>
@@ -52,7 +52,7 @@
     <select id="postGetAllPositionCityKey" resultMap="myDefine2">
         SELECT
         CAST(CITY AS VARCHAR) AS CITY,COUNT(CAST(CITY AS VARCHAR)) AS POSITION_COUNT
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
         GROUP BY CAST(CITY AS VARCHAR)
         HAVING CAST(CITY AS VARCHAR) != ''
         AND CAST(CITY AS VARCHAR) IN
@@ -64,7 +64,7 @@
     <select id="getAllPositionCity" resultMap="myDefine1">
         SELECT
         CAST(POSITION AS VARCHAR) AS POSITION,COUNT(DISTINCT(CAST(CITY AS VARCHAR))) AS CITY_COUNT
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
         GROUP BY CAST(POSITION AS VARCHAR)
         HAVING CAST(POSITION AS VARCHAR) != ''
         ORDER BY 2 DESC
@@ -79,7 +79,7 @@
         FROM
         (SELECT
         POSITION,CITY
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
         WHERE CITY IN
         <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
             #{city}
@@ -96,20 +96,20 @@
     <select id="getKey" resultType="string">
         SELECT
             KEY
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
         WHERE POSITION = '${position}';
     </select>
 
     <select id="getAllKey" resultType="string">
         SELECT
             KEY
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
     </select>
 
     <select id="getAllKeyByCity" resultType="string">
         SELECT
             KEY
-        FROM "recruitment_analysis"."POSITION_CITY_KEY"
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
         WHERE CITY IN
         <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
             #{city}
@@ -122,7 +122,7 @@
             (
             SELECT
             CAST(POSITION AS VARCHAR) AS POSITION,CAST(CITY AS VARCHAR) AS CITY
-            FROM "recruitment_analysis".POSITION_CITY_KEY
+            FROM "RECRUITMENT_ANALYSIS".POSITION_CITY_KEY
             GROUP BY CAST(CITY AS VARCHAR),CAST(POSITION AS VARCHAR)
             )
         GROUP BY CITY
@@ -136,7 +136,7 @@
             (
             SELECT
             CAST(POSITION AS VARCHAR) AS POSITION,CAST(CITY AS VARCHAR) AS CITY
-            FROM "recruitment_analysis".POSITION_CITY_KEY
+            FROM "RECRUITMENT_ANALYSIS".POSITION_CITY_KEY
             GROUP BY CAST(CITY AS VARCHAR),CAST(POSITION AS VARCHAR)
             )
         GROUP BY CITY

@@ -32,4 +32,12 @@ public interface PositionCityKeyService {
 
     CityCount getHighestCityCount(List<String> city);
 
+    String[] getAllPosition(Integer limit);
+
+    String[] getAllPosition(Integer limit, List<String> city);
+
+    Map<String,Integer> getKeyByPosition(String position);
+
+    Map<String,Integer> getKeyByPosition(String position, List<String> city);
+
 }

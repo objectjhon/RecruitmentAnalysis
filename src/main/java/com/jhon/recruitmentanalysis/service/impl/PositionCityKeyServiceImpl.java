@@ -116,4 +116,52 @@ public class PositionCityKeyServiceImpl implements PositionCityKeyService {
         return positionCityKeyMapper.postGetHighestCityCount(city);
     }
 
+    @Override
+    public String[] getAllPosition(Integer limit) {
+        return positionCityKeyMapper.getAllPosition(limit);
+    }
+
+    @Override
+    public String[] getAllPosition(Integer limit, List<String> city) {
+        return positionCityKeyMapper.getAllPositionByCity(limit, city);
+    }
+
+    @Override
+    public Map<String,Integer> getKeyByPosition(String position) {
+        String[] keyByPosition = positionCityKeyMapper.getKeyByPosition(position);
+        List<String> allKeyValList = new ArrayList<>();
+        for (String s : keyByPosition) {
+            for (String s1 : s.split(" ")) {
+                if (!s1.equals("")){
+                    allKeyValList.add(s1);
+                }
+            }
+        }
+        Map<String,Integer> allKeyValMap = new HashMap<>();
+        for (String s : allKeyValList) {
+            Integer count = allKeyValMap.get(s);
+            allKeyValMap.put(s, (count == null) ? 1 : count + 1);
+        }
+        return allKeyValMap;
+    }
+
+    @Override
+    public Map<String, Integer> getKeyByPosition(String position, List<String> city) {
+        String[] keyByPosition = positionCityKeyMapper.getKeyByPositionCity(position, city);
+        List<String> allKeyValList = new ArrayList<>();
+        for (String s : keyByPosition) {
+            for (String s1 : s.split(" ")) {
+                if (!s1.equals("")){
+                    allKeyValList.add(s1);
+                }
+            }
+        }
+        Map<String,Integer> allKeyValMap = new HashMap<>();
+        for (String s : allKeyValList) {
+            Integer count = allKeyValMap.get(s);
+            allKeyValMap.put(s, (count == null) ? 1 : count + 1);
+        }
+        return allKeyValMap;
+    }
+
 }

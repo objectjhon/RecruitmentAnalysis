@@ -31,4 +31,12 @@ public interface PositionCityKeyMapper {
 
     CityCount postGetHighestCityCount(@Param("city") List<String> city);
 
+    String[] getAllPosition(@Param("limit") Integer limit);
+
+    String[] getAllPositionByCity(@Param("limit") Integer limit, @Param("city") List<String> city);
+
+    String[] getKeyByPosition(@Param("position") String position);
+
+    String[] getKeyByPositionCity(@Param("position") String position, @Param("city") List<String> city);
+
 }

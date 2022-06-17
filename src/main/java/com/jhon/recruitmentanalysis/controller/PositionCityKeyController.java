@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 @RestController
 @CrossOrigin
@@ -237,6 +238,66 @@ public class PositionCityKeyController {
         map.put("highestCityCount",highestCityCount);
 
         return R.ok().message("查询成功").data(map);
+    }
+
+    // 查询所有岗位的名称
+    @PostMapping("/getAllPosition")
+    public R getAllPosition(@RequestParam(value = "limit", required = false) Integer limit,
+                            @RequestParam(value = "city",required = false) ArrayList<String> city){
+
+        String[] positions;
+
+        if (city != null){
+
+            positions = positionCityKeyService.getAllPosition(limit,city);
+
+        } else {
+
+            positions = positionCityKeyService.getAllPosition(limit);
+
+        }
+
+        Map<String,Object> map = new LinkedHashMap<>();
+
+        map.put("allPosition",positions);
+
+        return R.ok().message("查询成功").data(map);
+    }
+
+    // 查询岗位专业术语提到的次数
+    @PostMapping("/getKeyByPosition")
+    public R getKeyByPosition(@RequestParam(value = "position",required = false) String position,
+                              @RequestParam(value = "city",required = false) ArrayList<String> city){
+
+        Map<String,Object> map = new LinkedHashMap<>();
+
+        //根据岗位查询关键字
+        Map<String,Integer> keyByPositionMap;
+
+        if (city != null){
+
+            keyByPositionMap = positionCityKeyService.getKeyByPosition(position, city);
+
+        } else {
+
+            keyByPositionMap = positionCityKeyService.getKeyByPosition(position);
+
+        }
+
+        int max = 0;
+
+        Object[] objects  = keyByPositionMap.values().stream().sorted().toArray();
+        max = (int) objects[objects.length-1];
+
+        map.put("max",max);
+        map.put("nameList",keyByPositionMap.keySet());
+        Map<String,Object> newMap = new LinkedHashMap<>();
+        newMap.put("name",position);
+        newMap.put("value",keyByPositionMap.values());
+        map.put("data",newMap);
+
+        return R.ok().message("查询成功").data(map);
+
     }
     
 }

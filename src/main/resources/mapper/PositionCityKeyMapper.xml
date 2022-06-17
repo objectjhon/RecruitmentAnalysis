@@ -147,4 +147,53 @@
         ORDER BY COUNT DESC;
     </select>
 
+    <select id="getAllPosition" resultType="string">
+        SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION
+        FROM "RECRUITMENT_ANALYSIS"."POSITION_CITY_KEY"
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY COUNT(*) DESC
+        <if test="limit != null">
+            LIMIT #{limit};
+        </if>
+    </select>
+
+    <select id="getAllPositionByCity" resultType="string">
+        SELECT
+        CAST(POSITION AS VARCHAR) AS POSITION
+        FROM
+        (
+        SELECT
+        *
+        FROM "RECRUITMENT_ANALYSIS".POSITION_CITY_KEY
+        WHERE CITY IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        )
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY COUNT(*) DESC
+        <if test="limit != null">
+            LIMIT #{limit};
+        </if>
+    </select>
+
+    <select id="getKeyByPosition" resultType="string">
+        SELECT
+            KEY
+        FROM "recruitment_analysis".POSITION_CITY_KEY
+        WHERE CAST(POSITION AS VARCHAR) = #{position}
+    </select>
+
+    <select id="getKeyByPositionCity" resultType="string">
+        SELECT
+            KEY
+        FROM "recruitment_analysis".POSITION_CITY_KEY
+        WHERE CAST(POSITION AS VARCHAR) = #{position} AND
+        CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+    </select>
+
 </mapper>

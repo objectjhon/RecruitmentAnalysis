@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.PositionSalaryMapper">
+
+    <select id="getAllPositionSalary" resultType="com.jhon.recruitmentanalysis.pojo.PositionSalary">
+        SELECT
+            CAST(YEAR AS VARCHAR) AS YEAR,
+            CAST(MONTH AS VARCHAR) AS MONTH,
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            MAX(SALARY_MAX) AS SALARY_MAX,
+            MIN(SALARY_MIN) AS SALARY_MIN,
+            (MAX(SALARY_MAX)+MIN(SALARY_MIN))/2 AS SALARY_AVG
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE SALARY_MIN != -1
+        <if test="position != null">
+            AND CAST(POSITION AS VARCHAR) = #{position}
+        </if>
+        GROUP BY CAST(YEAR AS VARCHAR),CAST(MONTH AS VARCHAR),CAST(POSITION AS VARCHAR)
+        ORDER BY YEAR ASC,MONTH ASC,SALARY_MAX DESC
+    </select>
+
+    <select id="getAllPositionSalaryByCity" resultType="com.jhon.recruitmentanalysis.pojo.PositionSalary">
+        SELECT
+            CAST(YEAR AS VARCHAR) AS YEAR,
+            CAST(MONTH AS VARCHAR) AS MONTH,
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            MAX(SALARY_MAX) AS SALARY_MAX,
+            MIN(SALARY_MIN) AS SALARY_MIN,
+            (MAX(SALARY_MAX)+MIN(SALARY_MIN))/2 AS SALARY_AVG
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE SALARY_MIN != -1 AND CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        <if test="position != null">
+            AND CAST(POSITION AS VARCHAR) = #{position}
+        </if>
+        GROUP BY CAST(YEAR AS VARCHAR),CAST(MONTH AS VARCHAR),CAST(POSITION AS VARCHAR)
+        ORDER BY YEAR ASC,MONTH ASC,SALARY_MAX DESC
+    </select>
+
+    <select id="getPositionCount" resultType="integer">
+        SELECT COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE SALARY_MIN &gt;= #{salaryMin} AND SALARY_MAX &lt;= #{salaryMax}
+    </select>
+
+    <select id="getPositionCountByCity" resultType="integer">
+        SELECT COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE SALARY_MIN &gt;= #{salaryMin} AND SALARY_MAX &lt;= #{salaryMax}
+            AND CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        ORDER BY POSITION_COUNT DESC
+    </select>
+
+    <select id="getPositionSalary" resultType="map">
+        SELECT
+            CAST(YEAR AS VARCHAR) AS YEAR,
+            CAST(MONTH AS VARCHAR) AS MONTH,
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            MAX(SALARY_MAX) AS SALARY_MAX
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE SALARY_MAX != -1
+        GROUP BY CAST(YEAR AS VARCHAR),CAST(MONTH AS VARCHAR),CAST(POSITION AS VARCHAR)
+        ORDER BY YEAR ASC,MONTH ASC,SALARY_MAX DESC
+    </select>
+
+    <select id="getPositionSalaryByCity" resultType="map">
+        SELECT
+            CAST(YEAR AS VARCHAR) AS YEAR,
+            CAST(MONTH AS VARCHAR) AS MONTH,
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            MAX(SALARY_MAX) AS SALARY_MAX
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE SALARY_MAX != -1 AND CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        GROUP BY CAST(YEAR AS VARCHAR),CAST(MONTH AS VARCHAR),CAST(POSITION AS VARCHAR)
+        ORDER BY YEAR ASC,MONTH ASC,SALARY_MAX DESC
+    </select>
+
+    <select id="getHighestSalaryPosition" resultType="map">
+        SELECT
+            TOP 1
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            MAX(SALARY_MAX) AS SALARY_MAX
+        FROM RECRUITMENT_ANALYSIS.DATA
+        <where>
+            <if test="year != null">
+                CAST(YEAR AS VARCHAR) = #{year}
+            </if>
+            <if test="month != null">
+                AND CAST(MONTH AS VARCHAR) = #{month}
+            </if>
+        </where>
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY SALARY_MAX DESC
+    </select>
+
+    <select id="getHighestSalaryPositionByCity" resultType="map">
+        SELECT
+            TOP 1
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            MAX(SALARY_MAX) AS SALARY_MAX
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        <if test="year != null">
+            AND CAST(YEAR AS VARCHAR) = #{year}
+        </if>
+        <if test="month != null">
+            AND CAST(MONTH AS VARCHAR) = #{month}
+        </if>
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY SALARY_MAX DESC
+    </select>
+
+</mapper>

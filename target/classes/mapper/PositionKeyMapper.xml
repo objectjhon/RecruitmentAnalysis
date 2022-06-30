@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.PositionKeyMapper">
+
+    <select id="getAllKey" resultType="string">
+        SELECT CAST(KEYWORDS AS VARCHAR) AS KEYWORDS
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE CAST(KEYWORDS AS VARCHAR) != ''
+    </select>
+
+    <select id="getAllKeyByCity" resultType="string">
+        SELECT CAST(KEYWORDS AS VARCHAR) AS KEYWORDS
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE CAST(KEYWORDS AS VARCHAR) != '' AND CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+    </select>
+
+    <select id="getPositionKey" resultType="string">
+        SELECT CAST(KEYWORDS AS VARCHAR) AS KEYWORDS
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE CAST(KEYWORDS AS VARCHAR) != ''
+        AND CAST(POSITION AS VARCHAR) = #{position}
+    </select>
+
+    <select id="getPositionKeyByCity" resultType="string">
+        SELECT CAST(KEYWORDS AS VARCHAR) AS KEYWORDS
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE CAST(KEYWORDS AS VARCHAR) != ''
+        AND CAST(POSITION AS VARCHAR) = #{position}
+        AND CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+    </select>
+
+    <select id="getKeyBySalaryPosition" resultType="string">
+        SELECT CAST(KEYWORDS AS VARCHAR) AS KEYWORDS
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE CAST(KEYWORDS AS VARCHAR) != ''
+        AND CAST(POSITION AS VARCHAR) = #{position}
+        <if test="salaryMin != null">
+            AND SALARY_MIN &gt; #{salaryMin}
+        </if>
+        <if test="salaryMax != null">
+            AND SALARY_MAX &lt; #{salaryMax}
+        </if>
+    </select>
+
+    <select id="getKeyBySalaryPositionCity" resultType="string">
+        SELECT CAST(KEYWORDS AS VARCHAR) AS KEYWORDS
+        FROM RECRUITMENT_ANALYSIS.DATA
+        WHERE CAST(KEYWORDS AS VARCHAR) != ''
+        AND CAST(POSITION AS VARCHAR) = #{position}
+        <if test="salaryMin != null">
+            AND SALARY_MIN &gt;= #{salaryMin}
+        </if>
+        <if test="salaryMax != null">
+            AND SALARY_MAX &lt;= #{salaryMax}
+        </if>
+        AND CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+    </select>
+
+</mapper>

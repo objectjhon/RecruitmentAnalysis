@@ -1,0 +1,23 @@
+server:
+  port: 8888
+
+spring:
+  datasource:
+    driverClassName: dm.jdbc.driver.DmDriver
+    url: jdbc:dm://www.jhon.top:5236
+#    url: jdbc:dm://119.96.188.91:30980
+    username: SYSDBA
+    password: SYSDBA
+    druid:
+      url: ${spring.datasource.url}
+      username: ${spring.datasource.username}
+      password: ${spring.datasource.password}
+      driver-class-name: ${spring.datasource.driverClassName}
+      test-while-idle: false
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.jhon.recruitmentanalysis.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

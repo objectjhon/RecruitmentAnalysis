@@ -3,16 +3,20 @@ package com.jhon.recruitmentanalysis.mapper;
 import org.apache.ibatis.annotations.Param;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface PositionKeyMapper {
 
-    String[] getAllKey();
+    List<Map<String,Object>> getAllKey();
 
-    String[] getAllKeyByCity(@Param("city") List<String> city);
+    List<Map<String,Object>> getAllKeyByCity(@Param("city") List<String> city);
 
-    String[] getPositionKey(@Param("position") String position);
+    List<Map<String,Object>> getPositionKey(@Param("limit") Integer limit,
+                                            @Param("position") String position);
 
-    String[] getPositionKeyByCity(@Param("position") String position,@Param("city") List<String> city);
+    List<Map<String,Object>> getPositionKeyByCity(@Param("limit") Integer limit,
+                                                  @Param("position") String position,
+                                                  @Param("city") List<String> city);
 
     String[] getKeyBySalaryPosition(@Param("position") String position,
                                     @Param("salaryMin") BigDecimal salaryMin,

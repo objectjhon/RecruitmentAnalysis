@@ -24,19 +24,19 @@ public class PositionKeyController {
     @PostMapping("/getAllKeyValue")
     public Map<String, Object> getAllKeyValue(@RequestParam(value = "city", required = false) ArrayList<String> city){
 
-        Map<String, Integer> allKeyValue = positionKeyService.getAllKeyValue(city);
+        List<Map<String,Object>> allKeyValue = positionKeyService.getAllKeyValue(city);
 
         List<Map> mapList = new ArrayList<>();
 
-        for (String s : allKeyValue.keySet()) {
+        for (Map<String, Object> stringIntegerMap : allKeyValue) {
             Map<String, Object> map1 = new LinkedHashMap<>();
-            map1.put("name",s);
-            map1.put("value",allKeyValue.get(s));
+            map1.put("name",stringIntegerMap.get("KEYWORD"));
+            map1.put("value",stringIntegerMap.get("KEYWORD_COUNT"));
             mapList.add(map1);
         }
 
         List<Map> collect = mapList.stream().
-                sorted((h1, h2) -> ((Integer) h2.get("value")).compareTo((Integer) h1.get("value"))).collect(Collectors.toList());
+                sorted((h1, h2) -> ((Long) h2.get("value")).compareTo((Long) h1.get("value"))).collect(Collectors.toList());
 
         Map<String,Object> map = new LinkedHashMap<>();
 
@@ -56,36 +56,32 @@ public class PositionKeyController {
             position = positionNameService.getHighestPositionCount(null,null).getPosition();
         }
 
-        Map<String, Integer> positionKeyValue;
+        List<Map<String,Object>> positionKeyValue;
 
         //判断城市参数是否为空
         if (city == null || city.size() == 0) {
-            positionKeyValue = positionKeyService.getPositionKeyValue(position);
+            positionKeyValue = positionKeyService.getPositionKeyValue(limit,position);
         } else {
-            positionKeyValue = positionKeyService.getPositionKeyValue(position, city);
+            positionKeyValue = positionKeyService.getPositionKeyValue(limit,position, city);
         }
 
-        LinkedHashMap<String, Integer> hashMap;
+        List keyList = new ArrayList();
+        List valueList = new ArrayList();
 
-        if (limit != null && positionKeyValue.entrySet().size() > limit){
-            hashMap = positionKeyValue.entrySet().stream().sorted((e1, e2) -> {
-                return e2.getValue() - e1.getValue();
-            }).limit(limit).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-        } else {
-            hashMap = positionKeyValue.entrySet().stream().sorted((e1, e2) -> {
-                return e2.getValue() - e1.getValue();
-            }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        for (Map<String, Object> map : positionKeyValue) {
+            keyList.add(map.get("KEYWORD"));
+            valueList.add(map.get("KEYWORD_COUNT"));
         }
 
         Map<String,Object> map = new LinkedHashMap<>();
 
-        map.put("max",hashMap.values().toArray()[0]);
+        map.put("max",positionKeyValue.get(0).get("KEYWORD_COUNT"));
 
-        map.put("nameList",hashMap.keySet());
+        map.put("nameList",keyList);
 
         Map<String,Object> dataMap = new LinkedHashMap<>();
         dataMap.put("name",position);
-        dataMap.put("value",hashMap.values());
+        dataMap.put("value",valueList);
         map.put("data",dataMap);
 
         return map;

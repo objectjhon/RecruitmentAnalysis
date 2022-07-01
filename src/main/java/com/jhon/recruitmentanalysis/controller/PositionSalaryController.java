@@ -74,18 +74,6 @@ public class PositionSalaryController {
 
     }
 
-    /**
-     * 1.     0-3000
-     * 2.  3000-6000
-     * 3.  6000-9000
-     * 4.  9000-12000
-     * 5. 12000-15000
-     * 6. 15000-18000
-     * 7. 18000-21000
-     * 8. 21000-24000
-     * 9. 24000-27000
-     * 10.27000-30000
-     */
     //根据薪资范围查询岗位数量
     @PostMapping("/getPositionBySalary")
     public List<Map> getPositionBySalary(@RequestParam(value = "date",required = false) String date,

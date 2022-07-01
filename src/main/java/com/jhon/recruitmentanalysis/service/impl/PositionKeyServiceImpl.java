@@ -14,10 +14,10 @@ public class PositionKeyServiceImpl implements PositionKeyService {
     PositionKeyMapper positionKeyMapper;
 
     @Override
-    public Map<String, Integer> getAllKeyValue(List<String> city) {
+    public List<Map<String,Object>> getAllKeyValue(List<String> city) {
 
         //查询全部的关键字
-        String[] allKey;
+        List<Map<String,Object>> allKey;
 
         //判断城市参数是否为空
         if (city == null || city.size() == 0) {
@@ -26,77 +26,24 @@ public class PositionKeyServiceImpl implements PositionKeyService {
             allKey = positionKeyMapper.getAllKeyByCity(city);
         }
 
-        List<String> allKeyValList = new ArrayList<>();
-
-        //将每个关键字单独提取到list
-        for (String s : allKey) {
-            for (String s1 : s.split("\\|")) {
-                allKeyValList.add(s1);
-            }
-        }
-
-        Map<String, Integer> map = new LinkedHashMap<>();
-
-        //将每个关键字的个数计算出来放入map
-        for (String s : allKeyValList) {
-            Integer count = map.get(s);
-            map.put(s, (count == null) ? 1 : count + 1);
-        }
-
-        return map;
+        return allKey;
     }
 
     @Override
-    public Map<String, Integer> getPositionKeyValue(String position) {
+    public List<Map<String,Object>> getPositionKeyValue(Integer limit,String position) {
 
-        //根据岗位查询关键字
-        String[] positionKey = positionKeyMapper.getPositionKey(position);
+        List<Map<String,Object>> positionKey = positionKeyMapper.getPositionKey(limit,position);
 
-        List<String> positionKeyValList = new ArrayList<>();
-
-        //将每个关键字单独提取到list
-        for (String s : positionKey) {
-            for (String s1 : s.split("\\|")) {
-                positionKeyValList.add(s1);
-            }
-        }
-
-        Map<String, Integer> map = new LinkedHashMap<>();
-
-        //将每个关键字的个数计算出来放入map
-        for (String s : positionKeyValList) {
-            Integer count = map.get(s);
-            map.put(s, (count == null) ? 1 : count + 1);
-        }
-
-        return map;
+        return positionKey;
 
     }
 
     @Override
-    public Map<String, Integer> getPositionKeyValue(String position, List<String> city) {
+    public List<Map<String,Object>> getPositionKeyValue(Integer limit,String position, List<String> city) {
 
-        //根据岗位查询关键字
-        String[] positionKey = positionKeyMapper.getPositionKeyByCity(position,city);
+        List<Map<String,Object>> positionKey = positionKeyMapper.getPositionKeyByCity(limit,position,city);
 
-        List<String> positionKeyValList = new ArrayList<>();
-
-        //将每个关键字单独提取到list
-        for (String s : positionKey) {
-            for (String s1 : s.split("\\|")) {
-                positionKeyValList.add(s1);
-            }
-        }
-
-        Map<String, Integer> map = new LinkedHashMap<>();
-
-        //将每个关键字的个数计算出来放入map
-        for (String s : positionKeyValList) {
-            Integer count = map.get(s);
-            map.put(s, (count == null) ? 1 : count + 1);
-        }
-
-        return map;
+        return positionKey;
 
     }
 

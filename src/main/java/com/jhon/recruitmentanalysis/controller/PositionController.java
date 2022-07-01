@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jhon.recruitmentanalysis.pojo.Position;
 import com.jhon.recruitmentanalysis.service.PositionService;
-import javafx.geometry.Pos;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,13 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 public class PositionController {
 
     @Resource
     PositionService positionService;
 
     @PostMapping("/getAll")
-    public List<Map<String,Object>> getAll(@RequestParam(value = "pageNum", required = false) Integer pageNum,
+    public Map<String,Object> getAll(@RequestParam(value = "pageNum", required = false) Integer pageNum,
                                            @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                            @RequestParam(value = "date", required = false) String date,
                                            @RequestParam(value = "city", required = false) String city,
@@ -68,6 +69,8 @@ public class PositionController {
             positionList = positionService.getAll(year,month,day,city,salaryMin,salaryMax,keyword);
         }
 
+        PageInfo pageInfo = new PageInfo(positionList);
+
         List<Map<String,Object>> list = new ArrayList<>();
 
         for (Position position : positionList) {
@@ -81,10 +84,12 @@ public class PositionController {
             list.add(objectMap);
         }
 
-        PageInfo pageInfo = new PageInfo(list);
-        System.out.println(pageInfo);
+        Map<String,Object> map = new LinkedHashMap<>();
 
-        return list;
+        map.put("pages",pageInfo.getPages());
+        map.put("data",list);
+
+        return map;
 
     }
 

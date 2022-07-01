@@ -25,13 +25,13 @@ public class PositionSalaryServiceImpl implements PositionSalaryService {
     }
 
     @Override
-    public Integer getPositionCount(Integer salaryMin, Integer salaryMax) {
-        return positionSalaryMapper.getPositionCount(salaryMin,salaryMax);
+    public Integer getPositionCount(String year,String month,Integer salaryMin, Integer salaryMax) {
+        return positionSalaryMapper.getPositionCount(year,month,salaryMin,salaryMax);
     }
 
     @Override
-    public Integer getPositionCount(Integer salaryMin, Integer salaryMax, List<String> city) {
-        return positionSalaryMapper.getPositionCountByCity(salaryMin,salaryMax,city);
+    public Integer getPositionCount(String year,String month,Integer salaryMin, Integer salaryMax, List<String> city) {
+        return positionSalaryMapper.getPositionCountByCity(year,month,salaryMin,salaryMax,city);
     }
 
     @Override

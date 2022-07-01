@@ -289,9 +289,12 @@ public class PositionNameController {
         LinkedHashMap<String, List<List>> hashMap = list1.stream()
                 .collect(Collectors.groupingBy(e -> e.get(0).toString(), LinkedHashMap::new, Collectors.toList()));
 
-        //过滤日期
-        for (List<List> value : hashMap.values()) {
-            for (List list : value) {
+        //过滤日期,限制返回个数
+        for (Map.Entry<String, List<List>> stringListEntry : hashMap.entrySet()) {
+            if (limit != null && stringListEntry.getValue().size() > limit){
+                hashMap.put(stringListEntry.getKey(),stringListEntry.getValue().subList(0,limit));
+            }
+            for (List list : stringListEntry.getValue()) {
                 list.remove(0);
             }
         }

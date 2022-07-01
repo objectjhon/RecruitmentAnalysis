@@ -43,6 +43,12 @@
         SELECT COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
         FROM RECRUITMENT_ANALYSIS.DATA
         WHERE SALARY_MIN &gt;= #{salaryMin} AND SALARY_MAX &lt;= #{salaryMax}
+        <if test="year != null">
+            AND CAST(YEAR AS VARCHAR) = #{year}
+        </if>
+        <if test="month != null">
+            AND CAST(MONTH AS VARCHAR) = #{month}
+        </if>
     </select>
 
     <select id="getPositionCountByCity" resultType="integer">
@@ -53,6 +59,12 @@
         <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
             #{city}
         </foreach>
+        <if test="year != null">
+            AND CAST(YEAR AS VARCHAR) = #{year}
+        </if>
+        <if test="month != null">
+            AND CAST(MONTH AS VARCHAR) = #{month}
+        </if>
         ORDER BY POSITION_COUNT DESC
     </select>
 

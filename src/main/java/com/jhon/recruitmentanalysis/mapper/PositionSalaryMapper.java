@@ -12,10 +12,14 @@ public interface PositionSalaryMapper {
     List<PositionSalary> getAllPositionSalaryByCity(@Param("position") String position,
                                                     @Param("city") List<String> city);
 
-    Integer getPositionCount(@Param("salaryMin") Integer salaryMin,
+    Integer getPositionCount(@Param("year") String year,
+                             @Param("month") String month,
+                             @Param("salaryMin") Integer salaryMin,
                              @Param("salaryMax") Integer salaryMax);
 
-    Integer getPositionCountByCity(@Param("salaryMin") Integer salaryMin,
+    Integer getPositionCountByCity(@Param("year") String year,
+                                   @Param("month") String month,
+                                   @Param("salaryMin") Integer salaryMin,
                                    @Param("salaryMax") Integer salaryMax,
                                    @Param("city") List<String> city);
 

@@ -88,7 +88,8 @@ public class PositionSalaryController {
      */
     //根据薪资范围查询岗位数量
     @PostMapping("/getPositionBySalary")
-    public List<Map> getPositionBySalary(@RequestParam(value = "city", required = false) ArrayList<String> city){
+    public List<Map> getPositionBySalary(@RequestParam(value = "date",required = false) String date,
+                                         @RequestParam(value = "city", required = false) ArrayList<String> city){
 
         List<String> salaryList
                 = Arrays.asList(
@@ -105,6 +106,17 @@ public class PositionSalaryController {
                                 "27k-30k"
                         });
 
+        String year;
+        String month;
+
+        if (date == null){
+            year = null;
+            month = null;
+        } else {
+            year = date.split("-")[0];
+            month = date.split("-")[1];
+        }
+
         List<Map> list = new ArrayList<>();
 
         Integer salaryMin = 0;
@@ -117,9 +129,9 @@ public class PositionSalaryController {
 
             //判断城市参数是否为空
             if (city == null || city.size() == 0) {
-                count = positionSalaryService.getPositionCount(salaryMin, salaryMax);
+                count = positionSalaryService.getPositionCount(year, month, salaryMin, salaryMax);
             } else {
-                count = positionSalaryService.getPositionCount(salaryMin, salaryMax, city);
+                count = positionSalaryService.getPositionCount(year, month, salaryMin, salaryMax, city);
             }
 
             map.put("value",count);

@@ -48,7 +48,8 @@ public class PositionKeyController {
 
     //某岗位专业术语提到的次数
     @PostMapping("/getPositionKeyValue")
-    public Map<String,Object> getPositionKeyValue(@RequestParam(value = "position", required = false) String position,
+    public Map<String,Object> getPositionKeyValue(@RequestParam(value = "limit", required = false) Integer limit,
+                                                  @RequestParam(value = "position", required = false) String position,
                                                   @RequestParam(value = "city", required = false) ArrayList<String> city){
 
         if (position == null){
@@ -64,9 +65,17 @@ public class PositionKeyController {
             positionKeyValue = positionKeyService.getPositionKeyValue(position, city);
         }
 
-        LinkedHashMap<String, Integer> hashMap = positionKeyValue.entrySet().stream().sorted((e1, e2) -> {
-            return e2.getValue() - e1.getValue();
-        }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        LinkedHashMap<String, Integer> hashMap;
+
+        if (limit != null && positionKeyValue.entrySet().size() > limit){
+            hashMap = positionKeyValue.entrySet().stream().sorted((e1, e2) -> {
+                return e2.getValue() - e1.getValue();
+            }).limit(limit).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        } else {
+            hashMap = positionKeyValue.entrySet().stream().sorted((e1, e2) -> {
+                return e2.getValue() - e1.getValue();
+            }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        }
 
         Map<String,Object> map = new LinkedHashMap<>();
 

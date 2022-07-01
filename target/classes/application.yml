@@ -2,6 +2,8 @@ server:
   port: 8888
 
 spring:
+  main:
+    allow-circular-references: true
   datasource:
     driverClassName: dm.jdbc.driver.DmDriver
     url: jdbc:dm://www.jhon.top:5236
@@ -21,3 +23,9 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  helper-dialect: dm

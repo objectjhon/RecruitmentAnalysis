@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.PositionMapper">
+
+    <select id="getAll" resultType="com.jhon.recruitmentanalysis.pojo.Position">
+        SELECT DISTINCT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            CAST(YEAR AS VARCHAR) AS YEAR,
+            CAST(MONTH AS VARCHAR) AS MONTH,
+            CAST(DAY AS VARCHAR) AS DAY,
+            CAST(CITY AS VARCHAR) AS CITY,
+            CAST(KEYWORDS AS VARCHAR) AS KEYWORDS,
+            CAST(SALARY_MIN AS VARCHAR) AS SALARY_MIN,
+            CAST(SALARY_MAX AS VARCHAR) AS SALARY_MAX
+        FROM RECRUITMENT_ANALYSIS.DATA
+        <where>
+            <if test="year != null">
+                CAST(YEAR AS VARCHAR) = #{year}
+            </if>
+            <if test="month != null">
+                AND CAST(MONTH AS VARCHAR) = #{month}
+            </if>
+            <if test="day != null">
+                AND CAST(DAY AS VARCHAR) = #{day}
+            </if>
+            <if test="city != null">
+                AND CAST(CITY AS VARCHAR) = #{city}
+            </if>
+            <if test="salaryMin != null">
+                AND SALARY_MIN &gt;= #{salaryMin}
+            </if>
+            <if test="salaryMax != null">
+                AND SALARY_MAX &lt;= #{salaryMax}
+            </if>
+            AND SALARY_MIN != -1 AND SALARY_MAX != -1
+        </where>
+    </select>
+
+    <select id="getAllByKeyWord" resultType="com.jhon.recruitmentanalysis.pojo.Position">
+        SELECT DISTINCT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            CAST(YEAR AS VARCHAR) AS YEAR,
+            CAST(MONTH AS VARCHAR) AS MONTH,
+            CAST(DAY AS VARCHAR) AS DAY,
+            CAST(CITY AS VARCHAR) AS CITY,
+            CAST(KEYWORDS AS VARCHAR) AS KEYWORDS,
+            CAST(SALARY_MIN AS VARCHAR) AS SALARY_MIN,
+            CAST(SALARY_MAX AS VARCHAR) AS SALARY_MAX
+        FROM RECRUITMENT_ANALYSIS.DATA
+        <where>
+            <foreach collection="keyword" item="keyword" index="index"  open="(" separator="or" close=")">
+                KEYWORDS LIKE CONCAT('%',#{keyword},'%')
+            </foreach>
+            <if test="year != null">
+                AND CAST(YEAR AS VARCHAR) = #{year}
+            </if>
+            <if test="month != null">
+                AND CAST(MONTH AS VARCHAR) = #{month}
+            </if>
+            <if test="day != null">
+                AND CAST(DAY AS VARCHAR) = #{day}
+            </if>
+            <if test="city != null">
+                AND CAST(CITY AS VARCHAR) = #{city}
+            </if>
+            <if test="salaryMin != null">
+                AND SALARY_MIN &gt;= #{salaryMin}
+            </if>
+            <if test="salaryMax != null">
+                AND SALARY_MAX &lt;= #{salaryMax}
+            </if>
+            AND SALARY_MIN != -1 AND SALARY_MAX != -1
+        </where>
+    </select>
+
+</mapper>

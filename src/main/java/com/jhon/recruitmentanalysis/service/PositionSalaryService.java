@@ -10,9 +10,9 @@ public interface PositionSalaryService {
 
     List<PositionSalary> getAllPositionSalary(String position,List<String> city);
 
-    Integer getPositionCount(String year,String month,Integer salaryMin,Integer salaryMax);
+    List<Map<String,Object>> getPositionCount(String year,String month);
 
-    Integer getPositionCount(String year,String month,Integer salaryMin,Integer salaryMax,List<String> city);
+    List<Map<String,Object>> getPositionCount(String year,String month,List<String> city);
 
     List<Map<String,Object>> getPositionSalary();
 

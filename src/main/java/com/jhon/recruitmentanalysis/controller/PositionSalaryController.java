@@ -79,21 +79,6 @@ public class PositionSalaryController {
     public List<Map> getPositionBySalary(@RequestParam(value = "date",required = false) String date,
                                          @RequestParam(value = "city", required = false) ArrayList<String> city){
 
-        List<String> salaryList
-                = Arrays.asList(
-                        new String[]{
-                                "0k-3k",
-                                "3k-6k",
-                                "6k-9k",
-                                "9k-12k",
-                                "12k-15k",
-                                "15k-18k",
-                                "18k-21k",
-                                "21k-24k",
-                                "24k-27k",
-                                "27k-30k"
-                        });
-
         String year;
         String month;
 
@@ -107,28 +92,54 @@ public class PositionSalaryController {
 
         List<Map> list = new ArrayList<>();
 
-        Integer salaryMin = 0;
-        Integer salaryMax = 3000;
+        List<Map<String, Object>> positionCount;
 
-        for (String s : salaryList) {
-            Map<String,Object> map = new LinkedHashMap<>();
-            map.put("name",s);
-            Integer count;
-
-            //判断城市参数是否为空
-            if (city == null || city.size() == 0) {
-                count = positionSalaryService.getPositionCount(year, month, salaryMin, salaryMax);
-            } else {
-                count = positionSalaryService.getPositionCount(year, month, salaryMin, salaryMax, city);
-            }
-
-            map.put("value",count);
-            list.add(map);
-            salaryMin += 3000;
-            salaryMax += 3000;
+        //判断城市参数是否为空
+        if (city == null || city.size() == 0) {
+            positionCount = positionSalaryService.getPositionCount(year, month);
+        } else {
+            positionCount = positionSalaryService.getPositionCount(year, month, city);
         }
 
-        return list;
+        for (Map<String, Object> map : positionCount) {
+            Map<String,Object> objectMap = new LinkedHashMap<>();
+            objectMap.put("name",map.get("SALARY_SECTION"));
+            objectMap.put("value",map.get("POSITION_COUNT"));
+            list.add(objectMap);
+        }
+
+        List<Map> collect = list.stream()
+                .sorted(
+                        (h1, h2) -> (Integer.valueOf(h1.get("name").toString().split("-")[0]))
+                                .compareTo(Integer.valueOf(h2.get("name").toString().split("-")[0])))
+                .collect(Collectors.toList());
+
+        for (Map map : collect) {
+            String[] split = map.get("name").toString().split("-");
+            map.put("name",Integer.parseInt(split[0])/1000+"k-"+Integer.parseInt(split[1])/1000+"k");
+        }
+
+        List<Map> mapList;
+
+        if (collect.size() > 14) {
+            mapList = collect.subList(0,14);
+
+            Long sum = 0L;
+            for (int i = 14; i < collect.size(); i++) {
+                sum += (Long) collect.get(i).get("value");
+            }
+
+            Map<String,Object> newMap = new LinkedHashMap<>();
+            newMap.put("name",collect.get(14).get("name").toString().split("-")[0]+"+");
+            newMap.put("value",sum);
+            mapList.add(newMap);
+        } else {
+            mapList = collect;
+        }
+
+
+
+        return mapList;
 
     }
 

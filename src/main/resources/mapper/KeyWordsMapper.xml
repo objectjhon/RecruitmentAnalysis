@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.KeyWordsMapper">
+
+    <select id="getAllKeyWords" resultType="com.jhon.recruitmentanalysis.pojo.KeyWords">
+        SELECT *
+        FROM RECRUITMENT_ANALYSIS.KEYWORDS
+        <if test="query !=null and query !=''">
+            WHERE KEYVALUE LIKE CONCAT('%',#{query},'%')
+            OR REPLACEKEYVALUE LIKE CONCAT('%',#{query},'%')
+        </if>
+    </select>
+
+    <insert id="addKeyWord" useGeneratedKeys="true" keyProperty="id" parameterType="com.jhon.recruitmentanalysis.pojo.KeyWords">
+        INSERT INTO
+            RECRUITMENT_ANALYSIS.KEYWORDS(KEYVALUE,REPLACEKEYVALUE,STATUS)
+        VALUES (#{keyvalue},#{replacekeyvalue},#{status});
+    </insert>
+
+    <select id="getKeyWordById" resultType="com.jhon.recruitmentanalysis.pojo.KeyWords">
+        SELECT *
+        FROM RECRUITMENT_ANALYSIS.KEYWORDS
+        WHERE ID = #{id}
+    </select>
+
+    <update id="updateKeyWord">
+        UPDATE RECRUITMENT_ANALYSIS.KEYWORDS
+        SET KEYVALUE = #{keyvalue} AND REPLACEKEYVALUE = #{replacekeyvalue}
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="deleteKeyWord">
+        DELETE
+        FROM RECRUITMENT_ANALYSIS.KEYWORDS
+        WHERE ID = #{id}
+    </delete>
+
+</mapper>

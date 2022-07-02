@@ -39,23 +39,28 @@
         ORDER BY YEAR ASC,MONTH ASC,SALARY_MAX DESC
     </select>
 
-    <select id="getPositionCount" resultType="integer">
-        SELECT COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
-        FROM RECRUITMENT_ANALYSIS.DATA
-        WHERE SALARY_MIN &gt;= #{salaryMin} AND SALARY_MAX &lt;= #{salaryMax}
-        <if test="year != null">
-            AND CAST(YEAR AS VARCHAR) = #{year}
-        </if>
-        <if test="month != null">
-            AND CAST(MONTH AS VARCHAR) = #{month}
-        </if>
+    <select id="getPositionCount" resultType="map">
+        SELECT
+            CAST(SALARY_SECTION AS VARCHAR) AS SALARY_SECTION,
+            COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
+        FROM RECRUITMENT_ANALYSIS.KEY_WORDS_COUNT_RELEVANT
+        <where>
+            <if test="year != null">
+                CAST(YEAR AS VARCHAR) = #{year}
+            </if>
+            <if test="month != null">
+                AND CAST(MONTH AS VARCHAR) = #{month}
+            </if>
+        </where>
+        GROUP BY CAST(SALARY_SECTION AS VARCHAR)
     </select>
 
-    <select id="getPositionCountByCity" resultType="integer">
-        SELECT COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
-        FROM RECRUITMENT_ANALYSIS.DATA
-        WHERE SALARY_MIN &gt;= #{salaryMin} AND SALARY_MAX &lt;= #{salaryMax}
-            AND CAST(CITY AS VARCHAR) IN
+    <select id="getPositionCountByCity" resultType="map">
+        SELECT
+            CAST(SALARY_SECTION AS VARCHAR) AS SALARY_SECTION,
+            COUNT(CAST(POSITION AS VARCHAR)) AS POSITION_COUNT
+        FROM RECRUITMENT_ANALYSIS.KEY_WORDS_COUNT_RELEVANT
+        WHERE CAST(CITY AS VARCHAR) IN
         <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
             #{city}
         </foreach>
@@ -65,7 +70,7 @@
         <if test="month != null">
             AND CAST(MONTH AS VARCHAR) = #{month}
         </if>
-        ORDER BY POSITION_COUNT DESC
+        GROUP BY CAST(SALARY_SECTION AS VARCHAR)
     </select>
 
     <select id="getPositionSalary" resultType="map">

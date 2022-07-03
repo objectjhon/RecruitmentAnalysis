@@ -3,7 +3,6 @@ package com.jhon.recruitmentanalysis.controller.admin;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jhon.recruitmentanalysis.pojo.KeyWords;
-import com.jhon.recruitmentanalysis.pojo.User;
 import com.jhon.recruitmentanalysis.service.KeyWordsService;
 import com.jhon.recruitmentanalysis.utils.R;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -46,13 +45,13 @@ public class KeyWordsController {
     }
 
     @GetMapping("/admin/addKeyWord")
-    public R addKeyWord(@RequestParam("keyvalue") String keyvalue,
-                        @RequestParam("replacekeyvalue") String replacekeyvalue,
+    public R addKeyWord(@RequestParam("keyValue") String keyValue,
+                        @RequestParam("replaceKeyValue") String replaceKeyValue,
                         @RequestParam("status") Integer status){
 
         KeyWords keyWords = new KeyWords();
-        keyWords.setKeyvalue(keyvalue);
-        keyWords.setReplacekeyvalue(replacekeyvalue);
+        keyWords.setKeyValue(keyValue);
+        keyWords.setReplaceKeyValue(replaceKeyValue);
         keyWords.setStatus(status);
         Integer i = keyWordsService.addKeyWord(keyWords);
 
@@ -83,16 +82,30 @@ public class KeyWordsController {
 
     @GetMapping("/admin/updateKeyWord")
     public R updateKeyWord(@RequestParam("id") Integer id,
-                           @RequestParam("keyvalue") String keyvalue,
-                           @RequestParam("replacekeyvalue") String replacekeyvalue){
+                           @RequestParam("keyValue") String keyValue,
+                           @RequestParam("replaceKeyValue") String replaceKeyValue){
 
-        Integer i = keyWordsService.updateKeyWord(id,keyvalue,replacekeyvalue);
+        Integer i = keyWordsService.updateKeyWord(id,keyValue,replaceKeyValue);
 
         if (i > 0) {
             return R.ok().message("修改关键字成功");
         }
 
         return R.error().message("修改关键字失败");
+
+    }
+
+    @GetMapping("/admin/updateStatus")
+    public R updateStatus(@RequestParam("id") Integer id,
+                          @RequestParam("status") Integer status){
+
+        Integer i = keyWordsService.updateStatus(id,status);
+
+        if (i > 0) {
+            return R.ok().message("修改关键字状态成功");
+        }
+
+        return R.error().message("修改关键字状态失败");
 
     }
 

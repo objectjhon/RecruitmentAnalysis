@@ -6,8 +6,8 @@ import lombok.Data;
 public class KeyWords {
 
     private Integer id;
-    private String keyvalue;
-    private String replacekeyvalue;
+    private String keyValue;
+    private String replaceKeyValue;
     private Integer status;
 
 }

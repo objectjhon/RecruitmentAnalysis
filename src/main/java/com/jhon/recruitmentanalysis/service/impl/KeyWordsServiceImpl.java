@@ -30,8 +30,13 @@ public class KeyWordsServiceImpl implements KeyWordsService {
     }
 
     @Override
-    public Integer updateKeyWord(Integer id, String keyvalue, String replacekeyvalue) {
-        return keyWordsMapper.updateKeyWord(id,keyvalue,replacekeyvalue);
+    public Integer updateKeyWord(Integer id, String keyValue, String replaceKeyValue) {
+        return keyWordsMapper.updateKeyWord(id,keyValue,replaceKeyValue);
+    }
+
+    @Override
+    public Integer updateStatus(Integer id, Integer status) {
+        return keyWordsMapper.updateStatus(id,status);
     }
 
     @Override

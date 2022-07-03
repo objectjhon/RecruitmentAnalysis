@@ -14,8 +14,11 @@ public interface KeyWordsMapper {
     KeyWords getKeyWordById(@Param("id") Integer id);
 
     Integer updateKeyWord(@Param("id") Integer id,
-                          @Param("keyvalue") String keyvalue,
-                          @Param("replacekeyvalue") String replacekeyvalue);
+                          @Param("keyValue") String keyValue,
+                          @Param("replaceKeyValue") String replaceKeyValue);
+
+    Integer updateStatus(@Param("id") Integer id,
+                         @Param("status") Integer status);
 
     Integer deleteKeyWord(@Param("id") Integer id);
 

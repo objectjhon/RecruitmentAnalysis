@@ -12,7 +12,9 @@ public interface KeyWordsService {
 
     KeyWords getKeyWordById(Integer id);
 
-    Integer updateKeyWord(Integer id,String keyvalue,String replacekeyvalue);
+    Integer updateKeyWord(Integer id,String keyValue,String replaceKeyValue);
+
+    Integer updateStatus(Integer id,Integer status);
 
     Integer deleteKeyWord(Integer id);
 

@@ -6,15 +6,15 @@
         SELECT *
         FROM RECRUITMENT_ANALYSIS.KEYWORDS
         <if test="query !=null and query !=''">
-            WHERE KEYVALUE LIKE CONCAT('%',#{query},'%')
-            OR REPLACEKEYVALUE LIKE CONCAT('%',#{query},'%')
+            WHERE CAST(KEY_VALUE AS VARCHAR) LIKE CONCAT('%',#{query},'%')
+            OR CAST(REPLACE_KEY_VALUE AS VARCHAR) LIKE CONCAT('%',#{query},'%')
         </if>
     </select>
 
     <insert id="addKeyWord" useGeneratedKeys="true" keyProperty="id" parameterType="com.jhon.recruitmentanalysis.pojo.KeyWords">
         INSERT INTO
-            RECRUITMENT_ANALYSIS.KEYWORDS(KEYVALUE,REPLACEKEYVALUE,STATUS)
-        VALUES (#{keyvalue},#{replacekeyvalue},#{status});
+            RECRUITMENT_ANALYSIS.KEYWORDS(KEY_VALUE,REPLACE_KEY_VALUE,STATUS)
+        VALUES (#{keyValue},#{replaceKeyValue},#{status});
     </insert>
 
     <select id="getKeyWordById" resultType="com.jhon.recruitmentanalysis.pojo.KeyWords">
@@ -25,7 +25,13 @@
 
     <update id="updateKeyWord">
         UPDATE RECRUITMENT_ANALYSIS.KEYWORDS
-        SET KEYVALUE = #{keyvalue} AND REPLACEKEYVALUE = #{replacekeyvalue}
+        SET KEY_VALUE = #{keyValue},REPLACE_KEY_VALUE = #{replaceKeyValue}
+        WHERE ID = #{id};
+    </update>
+
+    <update id="updateStatus">
+        UPDATE RECRUITMENT_ANALYSIS.KEYWORDS
+        SET STATUS = #{status}
         WHERE ID = #{id};
     </update>
 

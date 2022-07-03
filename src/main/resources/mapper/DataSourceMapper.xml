@@ -6,9 +6,46 @@
         SELECT *
         FROM RECRUITMENT_ANALYSIS.DATA_SOURCE
         <if test="query !=null and query !=''">
-            WHERE DATA_URL LIKE CONCAT('%',#{query},'%')
-            OR TABLE_NAME LIKE CONCAT('%',#{query},'%')
+            WHERE CAST(DATA_URL AS VARCHAR) LIKE CONCAT('%',#{query},'%')
+            OR CAST(TABLE_NAME AS VARCHAR) LIKE CONCAT('%',#{query},'%')
         </if>
     </select>
+
+    <insert id="addDataSource" parameterType="com.jhon.recruitmentanalysis.pojo.DataSource">
+        INSERT INTO
+            RECRUITMENT_ANALYSIS.DATA_SOURCE(DATA_URL,TABLE_NAME,USERNAME,PASSWORD,DRIVER,DATA_TYPE,FILE_TYPE,STATUS)
+        VALUES (#{dataUrl},#{tableName},#{username},#{password},#{driver},#{dataType},#{fileType},#{status});
+    </insert>
+
+    <select id="getDataSourceById" resultType="com.jhon.recruitmentanalysis.pojo.DataSource">
+        SELECT *
+        FROM RECRUITMENT_ANALYSIS.DATA_SOURCE
+        WHERE ID = #{id}
+    </select>
+
+    <update id="updateDataSource" parameterType="com.jhon.recruitmentanalysis.pojo.DataSource">
+        UPDATE RECRUITMENT_ANALYSIS.DATA_SOURCE
+        SET
+            DATA_URL = #{dataUrl},
+            TABLE_NAME = #{tableName},
+            USERNAME = #{username},
+            PASSWORD = #{password},
+            DRIVER = #{driver},
+            DATA_TYPE = #{dataType},
+            FILE_TYPE = #{fileType}
+        WHERE ID = #{id};
+    </update>
+
+    <update id="updateDataStatus">
+        UPDATE RECRUITMENT_ANALYSIS.DATA_SOURCE
+        SET STATUS = #{status}
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="deleteDataSource">
+        DELETE
+        FROM RECRUITMENT_ANALYSIS.DATA_SOURCE
+        WHERE ID = #{id}
+    </delete>
 
 </mapper>

@@ -19,4 +19,29 @@ public class DataSourceServiceImpl implements DataSourceService {
         return dataSourceMapper.getAllDataSource(query);
     }
 
+    @Override
+    public Integer addDataSource(DataSource dataSource) {
+        return dataSourceMapper.addDataSource(dataSource);
+    }
+
+    @Override
+    public DataSource getDataSourceById(Integer id) {
+        return dataSourceMapper.getDataSourceById(id);
+    }
+
+    @Override
+    public Integer updateDataSource(DataSource dataSource) {
+        return dataSourceMapper.updateDataSource(dataSource);
+    }
+
+    @Override
+    public Integer updateDataStatus(Integer id, Integer status) {
+        return dataSourceMapper.updateDataStatus(id,status);
+    }
+
+    @Override
+    public Integer deleteDataSource(Integer id) {
+        return dataSourceMapper.deleteDataSource(id);
+    }
+
 }

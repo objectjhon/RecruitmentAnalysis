@@ -124,4 +124,48 @@ public class PositionKeyController {
 
     }
 
+    @PostMapping("/getKeyByPosition")
+    public Map<String,Object> getKeyByPosition(@RequestParam(value = "position", required = false) ArrayList<String> position){
+
+        if (position == null || position.size() == 0){
+            Map<String,Object> returnMap = new LinkedHashMap<>();
+            returnMap.put("code",404);
+            returnMap.put("message","请输入岗位列表");
+            return returnMap;
+        }
+
+        List<String> allKey = positionKeyService.getAllKey(position);
+
+        List<Map<String, Object>> keyByPosition = positionKeyService.getKeyByPosition(position);
+
+        LinkedHashMap<String, List<Map<String, Object>>> hashMap = keyByPosition.stream()
+                .collect(Collectors.groupingBy(e -> e.get("POSITION").toString(), LinkedHashMap::new, Collectors.toList()));
+
+        List<Map<String,Object>> list = new ArrayList();
+
+        for (Map.Entry<String, List<Map<String, Object>>> stringListEntry : hashMap.entrySet()) {
+            Map<String,Object> objectMap = new LinkedHashMap<>();
+            objectMap.put("name",stringListEntry.getKey());
+            String keyword = "";
+            for (int i = 0;i < stringListEntry.getValue().size();i++){
+                if (i < stringListEntry.getValue().size() - 1){
+                    keyword = keyword.concat((String) stringListEntry.getValue().get(i).get("KEYWORD")).concat("|");
+                } else {
+                    keyword = keyword.concat((String) stringListEntry.getValue().get(i).get("KEYWORD"));
+                }
+            }
+            objectMap.put("keyword",keyword);
+            list.add(objectMap);
+        }
+
+        Map<String,Object> map = new LinkedHashMap<>();
+        Map<String,Object> newMap = new LinkedHashMap();
+        newMap.put("keywordlist",allKey);
+        newMap.put("positionKeyword",list);
+        map.put("data",newMap);
+
+        return map;
+
+    }
+
 }

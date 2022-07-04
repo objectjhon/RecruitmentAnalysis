@@ -86,4 +86,25 @@
         </foreach>
     </select>
 
+    <select id="getAllKeyWord" resultType="string">
+        SELECT DISTINCT
+            CAST(KEYWORD AS VARCHAR) AS KEYWORD
+        FROM RECRUITMENT_ANALYSIS.KEY_WORDS_COUNT_RELEVANT
+        WHERE CAST(POSITION AS VARCHAR) IN
+        <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+            #{position}
+        </foreach>
+    </select>
+
+    <select id="getKeyByPosition" resultType="map">
+        SELECT DISTINCT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            CAST(KEYWORD AS VARCHAR) AS KEYWORD
+        FROM RECRUITMENT_ANALYSIS.KEY_WORDS_COUNT_RELEVANT
+        WHERE CAST(POSITION AS VARCHAR) IN
+        <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+            #{position}
+        </foreach>
+    </select>
+
 </mapper>

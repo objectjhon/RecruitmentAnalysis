@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.TreatmentMapper">
+
+    <select id="getTreatment" resultType="com.jhon.recruitmentanalysis.pojo.Treatment">
+        SELECT *
+        FROM RECRUITMENT_ANALYSIS.TREATMENT
+        <if test="query !=null and query !=''">
+            WHERE CAST(TREATMENT AS VARCHAR) LIKE CONCAT('%',#{query},'%')
+        </if>
+    </select>
+
+    <select id="getTreatmentById" resultType="com.jhon.recruitmentanalysis.pojo.Treatment">
+        SELECT *
+        FROM RECRUITMENT_ANALYSIS.TREATMENT
+        WHERE ID = #{id}
+    </select>
+
+    <insert id="addTreatment" parameterType="com.jhon.recruitmentanalysis.pojo.Treatment">
+        INSERT INTO
+            RECRUITMENT_ANALYSIS.TREATMENT(TREATMENT)
+        VALUES (#{treatment});
+    </insert>
+
+    <delete id="deleteTreatment">
+        DELETE
+        FROM RECRUITMENT_ANALYSIS.TREATMENT
+        WHERE ID = #{id}
+    </delete>
+
+    <update id="updateTreatment">
+        UPDATE RECRUITMENT_ANALYSIS.TREATMENT
+        SET TREATMENT = #{treatment}
+        WHERE ID = #{id};
+    </update>
+
+</mapper>

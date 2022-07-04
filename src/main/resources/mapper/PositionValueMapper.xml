@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.PositionValueMapper">
+
+    <select id="getAllPositionValue" resultType="com.jhon.recruitmentanalysis.pojo.PositionValue">
+        SELECT *
+        FROM RECRUITMENT_ANALYSIS.POSITION_VALUE
+        <if test="query !=null and query !=''">
+            WHERE CAST(POSITION_VALUE AS VARCHAR) LIKE CONCAT('%',#{query},'%')
+            OR CAST(REPLACE_POSITION_VALUE AS VARCHAR) LIKE CONCAT('%',#{query},'%')
+        </if>
+    </select>
+
+    <insert id="addPositionValue" parameterType="com.jhon.recruitmentanalysis.pojo.PositionValue">
+        INSERT INTO
+            RECRUITMENT_ANALYSIS.POSITION_VALUE(POSITION_VALUE,REPLACE_POSITION_VALUE,STATUS)
+        VALUES (#{positionValue},#{replacePositionValue},#{status});
+    </insert>
+
+    <select id="getPositionValueById" resultType="com.jhon.recruitmentanalysis.pojo.PositionValue">
+        SELECT *
+        FROM RECRUITMENT_ANALYSIS.POSITION_VALUE
+        WHERE ID = #{id}
+    </select>
+
+    <update id="updatePositionValue" parameterType="com.jhon.recruitmentanalysis.pojo.PositionValue">
+        UPDATE RECRUITMENT_ANALYSIS.POSITION_VALUE
+        SET
+            POSITION_VALUE = #{positionValue},
+            REPLACE_POSITION_VALUE = #{replacePositionValue}
+        WHERE ID = #{id};
+    </update>
+
+    <update id="updatePositionStatus">
+        UPDATE RECRUITMENT_ANALYSIS.POSITION_VALUE
+        SET STATUS = #{status}
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="deletePositionValue">
+        DELETE
+        FROM RECRUITMENT_ANALYSIS.POSITION_VALUE
+        WHERE ID = #{id}
+    </delete>
+
+</mapper>

@@ -14,4 +14,8 @@ public interface PositionKeyService {
 
     Map<String, Integer> getKeyBySalaryPosition(String position, BigDecimal salaryMin, BigDecimal salaryMax, List<String> city);
 
+    List<String> getAllKey(List<String> position);
+
+    List<Map<String,Object>> getKeyByPosition(List<String> position);
+
 }

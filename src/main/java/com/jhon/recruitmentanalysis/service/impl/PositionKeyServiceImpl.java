@@ -80,4 +80,14 @@ public class PositionKeyServiceImpl implements PositionKeyService {
 
     }
 
+    @Override
+    public List<String> getAllKey(List<String> position) {
+        return positionKeyMapper.getAllKeyWord(position);
+    }
+
+    @Override
+    public List<Map<String, Object>> getKeyByPosition(List<String> position) {
+        return positionKeyMapper.getKeyByPosition(position);
+    }
+
 }

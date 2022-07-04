@@ -73,4 +73,40 @@
         </where>
     </select>
 
+    <select id="getCountByPositionDate" resultType="map">
+        SELECT
+            T1.YEAR,T1.MONTH,T1.POSITION,T1.ALL_NUM,T2.CITY_NUM
+        FROM
+        (
+            SELECT
+                CAST(YEAR AS VARCHAR) AS YEAR,
+                CAST(MONTH AS VARCHAR) AS MONTH,
+                CAST(POSITION AS VARCHAR) AS POSITION,
+                COUNT(*) AS ALL_NUM
+            FROM RECRUITMENT_ANALYSIS.ETL_DATA
+            WHERE CAST(POSITION AS VARCHAR) IN
+            <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+                #{position}
+            </foreach>
+            GROUP BY CAST(YEAR AS VARCHAR),CAST(MONTH AS VARCHAR),CAST(POSITION AS VARCHAR)
+        ) T1 LEFT JOIN
+        (
+            SELECT
+                CAST(YEAR AS VARCHAR) AS YEAR,
+                CAST(MONTH AS VARCHAR) AS MONTH,
+                CAST(POSITION AS VARCHAR) AS POSITION,
+                COUNT(*) AS CITY_NUM
+            FROM RECRUITMENT_ANALYSIS.ETL_DATA
+            WHERE CAST(CITY AS VARCHAR) IN
+            <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+                #{city}
+            </foreach> AND CAST(POSITION AS VARCHAR) IN
+            <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+                #{position}
+            </foreach>
+            GROUP BY CAST(YEAR AS VARCHAR),CAST(MONTH AS VARCHAR),CAST(POSITION AS VARCHAR)
+        ) T2 ON T1.POSITION = T2.POSITION AND T1.YEAR = T2.YEAR AND T1.MONTH = T2.MONTH
+        ORDER BY T1.YEAR,T1.MONTH
+    </select>
+
 </mapper>

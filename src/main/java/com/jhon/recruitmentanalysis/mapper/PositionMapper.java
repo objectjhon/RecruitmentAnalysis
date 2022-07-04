@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface PositionMapper {
 
@@ -22,5 +23,8 @@ public interface PositionMapper {
                                    @Param("salaryMin") BigDecimal salaryMin,
                                    @Param("salaryMax") BigDecimal salaryMax,
                                    @Param("keyword") List<String> keyword);
+
+    List<Map<String,Object>> getCountByPositionDate(@Param("position") List<String> position,
+                                                    @Param("city") List<String> city);
 
 }

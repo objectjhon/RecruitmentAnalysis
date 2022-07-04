@@ -27,4 +27,8 @@ public interface PositionKeyMapper {
                                         @Param("salaryMax") BigDecimal salaryMax,
                                         @Param("city") List<String> city);
 
+    List<String> getAllKeyWord(@Param("position") List<String> position);
+
+    List<Map<String,Object>> getKeyByPosition(@Param("position") List<String> position);
+
 }

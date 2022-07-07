@@ -98,7 +98,7 @@ public class PDFController {
 //                PageUtil pageUtil = new PageUtil();
                 List<Position> listPage = PageUtil.getPageData(positionList, pn, ps);
                 // 表格
-                PdfPTable table = PdfFUtil.createTable(new float[]{80, 80, 80, 80, 80});
+                PdfPTable table = PdfFUtil.createTable(new float[]{44.44F, 44.44F, 44.44F, 44.44F, 44.44F, 44.44F, 44.44F, 44.44F, 44.44F});
                 for (int i = 0; i < listPage.size(); i++) {
                     table.addCell(PdfFUtil.createCell(listPage.get(i).getPosition(), textfont_10));
                     table.addCell(PdfFUtil.createCell(listPage.get(i).getYear()+"-"+listPage.get(i).getMonth()+"-"+listPage.get(i).getDay(), textfont_10));
@@ -109,6 +109,10 @@ public class PDFController {
                         table.addCell(PdfFUtil.createCell(listPage.get(i).getKeywords(), textfont_10));
                     }
                     table.addCell(PdfFUtil.createCell(listPage.get(i).getSalaryMin().intValue()/1000+"k-"+listPage.get(i).getSalaryMax().intValue()/1000+"k", textfont_10));
+                    table.addCell(PdfFUtil.createCell(listPage.get(i).getCompanyType(), textfont_10));
+                    table.addCell(PdfFUtil.createCell(listPage.get(i).getCompanyScale(), textfont_10));
+                    table.addCell(PdfFUtil.createCell(listPage.get(i).getAddressDetail(), textfont_10));
+                    table.addCell(PdfFUtil.createCell(listPage.get(i).getTreatment(), textfont_10));
                 }
                 document.add(table_item);
                 document.add(table); //表格数据
@@ -160,12 +164,16 @@ public class PDFController {
 
     /* 表格头部公共的一行 */
     public PdfPTable tbPublic(){
-        PdfPTable table = PdfFUtil.createTable(new float[] { 80, 80, 80, 80, 80});
+        PdfPTable table = PdfFUtil.createTable(new float[] {44.44F, 44.44F, 44.44F, 44.44F, 44.44F, 44.44F, 44.44F, 44.44F, 44.44F});
         table.addCell(PdfFUtil.createCell("岗位名称", textfont_10));
         table.addCell(PdfFUtil.createCell("日期", textfont_10));
         table.addCell(PdfFUtil.createCell("所在城市", textfont_10));
         table.addCell(PdfFUtil.createCell("主要技术", textfont_10));
         table.addCell(PdfFUtil.createCell("岗位薪资", textfont_10));
+        table.addCell(PdfFUtil.createCell("公司类型", textfont_10));
+        table.addCell(PdfFUtil.createCell("公司规模", textfont_10));
+        table.addCell(PdfFUtil.createCell("详细地址", textfont_10));
+        table.addCell(PdfFUtil.createCell("公司福利", textfont_10));
         return table;
     }
     /**

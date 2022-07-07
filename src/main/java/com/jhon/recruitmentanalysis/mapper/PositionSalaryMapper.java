@@ -2,6 +2,8 @@ package com.jhon.recruitmentanalysis.mapper;
 
 import com.jhon.recruitmentanalysis.pojo.PositionSalary;
 import org.apache.ibatis.annotations.Param;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +30,8 @@ public interface PositionSalaryMapper {
     Map<String,Object> getHighestSalaryPositionByCity(@Param("year") String year,
                                                       @Param("month") String month,
                                                       @Param("city") List<String> city);
+
+    List<Map> getPositionBySalary(@Param("minSalary") BigDecimal minSalary,
+                                  @Param("maxSalary") BigDecimal maxSalary);
 
 }

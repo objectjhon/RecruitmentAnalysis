@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface PositionKeyService {
 
+    List<Map<String,Object>> getAllKeyValue();
+
     List<Map<String,Object>> getAllKeyValue(List<String> city);
 
     List<Map<String,Object>> getPositionKeyValue(Integer limit,String position);
@@ -17,5 +19,7 @@ public interface PositionKeyService {
     List<String> getAllKey(List<String> position);
 
     List<Map<String,Object>> getKeyByPosition(List<String> position);
+
+    List<Map> getKeyWordBySalary(String salary);
 
 }

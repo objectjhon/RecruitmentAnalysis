@@ -27,4 +27,14 @@ public interface PositionMapper {
     List<Map<String,Object>> getCountByPositionDate(@Param("position") List<String> position,
                                                     @Param("city") List<String> city);
 
+    List<String> getAllEducation();
+
+    List<Map> getPositionEducation(@Param("position") List<String> position);
+
+    List<String> getAllExperience();
+
+    List<Map> getPositionExperience(@Param("position") List<String> position);
+
+    List<Map> getCityByPosition(@Param("position") List<String> position);
+
 }

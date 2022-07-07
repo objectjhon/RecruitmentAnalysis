@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.CompanyMapper">
+
+    <select id="getCompanyScale" resultType="map">
+        SELECT
+            CAST(COMPANY_SCALE AS VARCHAR) AS COMPANY_SCALE,
+            COUNT(*) AS SCALE_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(COMPANY_SCALE AS VARCHAR) != ''
+        AND CAST(POSITION AS VARCHAR) IN
+        <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+            #{position}
+        </foreach>
+        GROUP BY CAST(COMPANY_SCALE AS VARCHAR)
+    </select>
+
+    <select id="getCompanyType" resultType="map">
+        SELECT
+            CAST(COMPANY_TYPE AS VARCHAR) AS COMPANY_TYPE,
+            COUNT(*) AS TYPE_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(COMPANY_TYPE AS VARCHAR) != '' AND CAST(COMPANY_TYPE AS VARCHAR) != '500-1000人'
+        AND CAST(POSITION AS VARCHAR) IN
+        <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+            #{position}
+        </foreach>
+        GROUP BY CAST(COMPANY_TYPE AS VARCHAR)
+    </select>
+
+</mapper>

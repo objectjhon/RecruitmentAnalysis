@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -136,11 +137,7 @@ public class PositionSalaryController {
         } else {
             mapList = collect;
         }
-
-
-
         return mapList;
-
     }
 
     //根据时间查询岗位的薪资
@@ -220,6 +217,34 @@ public class PositionSalaryController {
 
         return map;
 
+    }
+
+    @PostMapping("/getPositionCountBySalary")
+    public Map<String,Object> getPositionCountBySalary(@RequestParam(value = "minSalary", required = false) BigDecimal minSalary,
+                                                  @RequestParam(value = "maxSalary", required = false) BigDecimal maxSalary){
+        if (minSalary == null){
+            Map<String,Object> returnMap = new LinkedHashMap<>();
+            returnMap.put("code",404);
+            returnMap.put("message","请输入最低薪资");
+            return returnMap;
+        }
+        if (maxSalary == null){
+            Map<String,Object> returnMap = new LinkedHashMap<>();
+            returnMap.put("code",404);
+            returnMap.put("message","请输入最高薪资");
+            return returnMap;
+        }
+        List<Map> positionBySalary = positionSalaryService.getPositionBySalary(minSalary, maxSalary);
+        List list = new ArrayList();
+        for (Map map : positionBySalary) {
+            Map newMap = new LinkedHashMap();
+            newMap.put("name",map.get("POSITION"));
+            newMap.put("value",map.get("POSITION_NUM"));
+            list.add(newMap);
+        }
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("data",list);
+        return map;
     }
 
 }

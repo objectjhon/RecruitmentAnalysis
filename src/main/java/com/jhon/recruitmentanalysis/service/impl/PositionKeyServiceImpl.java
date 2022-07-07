@@ -14,6 +14,11 @@ public class PositionKeyServiceImpl implements PositionKeyService {
     PositionKeyMapper positionKeyMapper;
 
     @Override
+    public List<Map<String, Object>> getAllKeyValue() {
+        return positionKeyMapper.getAllKey();
+    }
+
+    @Override
     public List<Map<String,Object>> getAllKeyValue(List<String> city) {
 
         //查询全部的关键字
@@ -88,6 +93,11 @@ public class PositionKeyServiceImpl implements PositionKeyService {
     @Override
     public List<Map<String, Object>> getKeyByPosition(List<String> position) {
         return positionKeyMapper.getKeyByPosition(position);
+    }
+
+    @Override
+    public List<Map> getKeyWordBySalary(String salary) {
+        return positionKeyMapper.getKeyWordBySalary(salary);
     }
 
 }

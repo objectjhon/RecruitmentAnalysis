@@ -11,8 +11,12 @@
             CAST(CITY AS VARCHAR) AS CITY,
             CAST(KEYWORDS AS VARCHAR) AS KEYWORDS,
             CAST(SALARY_MIN AS VARCHAR) AS SALARY_MIN,
-            CAST(SALARY_MAX AS VARCHAR) AS SALARY_MAX
-        FROM RECRUITMENT_ANALYSIS.DATA
+            CAST(SALARY_MAX AS VARCHAR) AS SALARY_MAX,
+            CAST(COMPANY_TYPE AS VARCHAR) AS COMPANY_TYPE,
+            CAST(COMPANY_SCALE AS VARCHAR) AS COMPANY_SCALE,
+            CAST(ADDRESS_DETAIL AS VARCHAR) AS ADDRESS_DETAIL,
+            CAST(TREATMENT AS VARCHAR) AS TREATMENT
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
         <where>
             <if test="year != null">
                 CAST(YEAR AS VARCHAR) = #{year}
@@ -45,8 +49,12 @@
             CAST(CITY AS VARCHAR) AS CITY,
             CAST(KEYWORDS AS VARCHAR) AS KEYWORDS,
             CAST(SALARY_MIN AS VARCHAR) AS SALARY_MIN,
-            CAST(SALARY_MAX AS VARCHAR) AS SALARY_MAX
-        FROM RECRUITMENT_ANALYSIS.DATA
+            CAST(SALARY_MAX AS VARCHAR) AS SALARY_MAX,
+            CAST(COMPANY_TYPE AS VARCHAR) AS COMPANY_TYPE,
+            CAST(COMPANY_SCALE AS VARCHAR) AS COMPANY_SCALE,
+            CAST(ADDRESS_DETAIL AS VARCHAR) AS ADDRESS_DETAIL,
+            CAST(TREATMENT AS VARCHAR) AS TREATMENT
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
         <where>
             <foreach collection="keyword" item="keyword" index="index"  open="(" separator="or" close=")">
                 KEYWORDS LIKE CONCAT('%',#{keyword},'%')
@@ -107,6 +115,68 @@
             GROUP BY CAST(YEAR AS VARCHAR),CAST(MONTH AS VARCHAR),CAST(POSITION AS VARCHAR)
         ) T2 ON T1.POSITION = T2.POSITION AND T1.YEAR = T2.YEAR AND T1.MONTH = T2.MONTH
         ORDER BY T1.YEAR,T1.MONTH
+    </select>
+
+    <select id="getAllEducation" resultType="string">
+        SELECT DISTINCT
+            CAST(EDUCATION_BACKGROUND AS VARCHAR) AS EDUCATION_BACKGROUND
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(EDUCATION_BACKGROUND AS VARCHAR) != ''
+        ORDER BY EDUCATION_BACKGROUND
+    </select>
+
+    <select id="getPositionEducation" resultType="map">
+        SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            CAST(EDUCATION_BACKGROUND AS VARCHAR) AS EDUCATION_BACKGROUND,
+            COUNT(*) AS EDUCATION_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(EDUCATION_BACKGROUND AS VARCHAR) != ''
+        AND CAST(POSITION AS VARCHAR) IN
+        <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+            #{position}
+        </foreach>
+        GROUP BY CAST(POSITION AS VARCHAR),CAST(EDUCATION_BACKGROUND AS VARCHAR)
+        ORDER BY CAST(POSITION AS VARCHAR),CAST(EDUCATION_BACKGROUND AS VARCHAR)
+    </select>
+
+    <select id="getAllExperience" resultType="string">
+        SELECT DISTINCT
+            CAST(EXPERIENCE_SECTION AS VARCHAR) AS EXPERIENCE_SECTION
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(EXPERIENCE_SECTION AS VARCHAR) != ''
+        ORDER BY EXPERIENCE_SECTION
+    </select>
+
+    <select id="getPositionExperience" resultType="map">
+        SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            CAST(EXPERIENCE_SECTION AS VARCHAR) AS EXPERIENCE_SECTION,
+            COUNT(*) AS WORK_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(EXPERIENCE_SECTION AS VARCHAR) != ''
+        AND CAST(POSITION AS VARCHAR) IN
+        <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+            #{position}
+        </foreach>
+        GROUP BY CAST(POSITION AS VARCHAR),CAST(EXPERIENCE_SECTION AS VARCHAR)
+        ORDER BY CAST(POSITION AS VARCHAR),CAST(EXPERIENCE_SECTION AS VARCHAR)
+    </select>
+
+    <select id="getCityByPosition" resultType="map">
+        SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            CAST(CITY AS VARCHAR) AS CITY,
+            COUNT(*) AS WORK_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(CITY AS VARCHAR) != ''
+        AND CAST(POSITION AS VARCHAR) IN
+        <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
+            #{position}
+        </foreach>
+        GROUP BY CAST(POSITION AS VARCHAR),CAST(CITY AS VARCHAR)
+        ORDER BY WORK_NUM DESC
+        LIMIT 10
     </select>
 
 </mapper>

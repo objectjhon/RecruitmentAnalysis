@@ -61,10 +61,10 @@
         WHERE CAST(KEYWORDS AS VARCHAR) != ''
         AND CAST(POSITION AS VARCHAR) = #{position}
         <if test="salaryMin != null">
-            AND SALARY_MIN &gt; #{salaryMin}
+            AND SALARY_MIN &gt;= #{salaryMin}
         </if>
         <if test="salaryMax != null">
-            AND SALARY_MAX &lt; #{salaryMax}
+            AND SALARY_MAX &lt;= #{salaryMax}
         </if>
     </select>
 
@@ -105,6 +105,18 @@
         <foreach collection="position" item="position" index="index" open="(" close=")" separator=",">
             #{position}
         </foreach>
+    </select>
+
+    <select id="getKeyWordBySalary" resultType="map">
+        SELECT
+            CAST(KEYWORD AS VARCHAR) AS KEYWORD,
+            SUM(KEYWORD_COUNT) AS KEYWORD_COUNT
+        FROM RECRUITMENT_ANALYSIS.KEY_WORDS_COUNT_RELEVANT
+        WHERE CAST(KEYWORD AS VARCHAR) != '' AND
+        CAST(SALARY_SECTION AS VARCHAR) = #{salary}
+        GROUP BY CAST(KEYWORD AS VARCHAR)
+        ORDER BY KEYWORD_COUNT DESC
+        LIMIT 10
     </select>
 
 </mapper>

@@ -5,6 +5,7 @@ import com.jhon.recruitmentanalysis.pojo.PositionSalary;
 import com.jhon.recruitmentanalysis.service.PositionSalaryService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,11 @@ public class PositionSalaryServiceImpl implements PositionSalaryService {
     @Override
     public Map<String, Object> getHighestSalaryPositionByCity(String year,String month,List<String> city) {
         return positionSalaryMapper.getHighestSalaryPositionByCity(year,month,city);
+    }
+
+    @Override
+    public List<Map> getPositionBySalary(BigDecimal minSalary, BigDecimal maxSalary) {
+        return positionSalaryMapper.getPositionBySalary(minSalary,maxSalary);
     }
 
 }

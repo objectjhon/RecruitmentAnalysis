@@ -82,6 +82,10 @@ public class PositionController {
             objectMap.put("keyword",position.getKeywords());
             objectMap.put("salary",position.getSalaryMin()
                     .intValue()/1000+"k-"+position.getSalaryMax().intValue()/1000+"k");
+            objectMap.put("companyType",position.getCompanyType());
+            objectMap.put("companyScale",position.getCompanyScale());
+            objectMap.put("addressDetail",position.getAddressDetail());
+            objectMap.put("treatment",position.getTreatment());
             list.add(objectMap);
         }
 
@@ -138,6 +142,136 @@ public class PositionController {
 
         map.put("date",hashMap.keySet());
         map.put("data",hashMap);
+
+        return map;
+
+    }
+
+    @PostMapping("/getPositionEducation")
+    public Map<String,Object> getPositionEducation(@RequestParam(value = "position", required = false) ArrayList<String> position){
+        if (position == null || position.size() == 0){
+            Map<String,Object> returnMap = new LinkedHashMap<>();
+            returnMap.put("code",404);
+            returnMap.put("message","请输入岗位列表");
+            return returnMap;
+        }
+        List<String> allEducation = positionService.getAllEducation();
+        List<Map> positionEducation = positionService.getPositionEducation(position);
+        Map<String,List<Map>> mapListGroup = positionEducation.stream()
+                .collect(Collectors.groupingBy(e -> e.get("POSITION").toString(),LinkedHashMap::new,Collectors.toList()));
+        for (Map.Entry<String, List<Map>> stringListEntry : mapListGroup.entrySet()) {
+            for (Map map : stringListEntry.getValue()) {
+                map.remove("POSITION");
+            }
+        }
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (Map.Entry<String, List<Map>> stringListEntry : mapListGroup.entrySet()) {
+            Map<String,Object> objectMap = new LinkedHashMap<>();
+            objectMap.put("name",stringListEntry.getKey());
+            for (int j = 0;j < allEducation.size();j++) {
+                String s = allEducation.get(j);
+                int i = 0;
+                for (;i < stringListEntry.getValue().size();i++){
+                    if (s.equals(stringListEntry.getValue().get(i).get("EDUCATION_BACKGROUND"))){
+                        break;
+                    }
+                }
+                if (i >= stringListEntry.getValue().size()){
+                    Map<String,Object> newMap = new LinkedHashMap<>();
+                    newMap.put("EDUCATION_BACKGROUND",s);
+                    newMap.put("EDUCATION_NUM",0);
+                    stringListEntry.getValue().add(j,newMap);
+                }
+            }
+            List newList = new ArrayList();
+            for (Map map : stringListEntry.getValue()) {
+                newList.add(map.get("EDUCATION_NUM"));
+            }
+            objectMap.put("value",newList);
+            mapList.add(objectMap);
+        }
+
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("name",allEducation);
+        map.put("data",mapList);
+        return map;
+
+    }
+
+    @PostMapping("/getExperienceByPosition")
+    public Map<String,Object> getExperienceByPosition(@RequestParam(value = "position", required = false) ArrayList<String> position){
+        if (position == null || position.size() == 0){
+            Map<String,Object> returnMap = new LinkedHashMap<>();
+            returnMap.put("code",404);
+            returnMap.put("message","请输入岗位列表");
+            return returnMap;
+        }
+        List<String> allExperience = positionService.getAllExperience();
+        List<Map> positionExperience = positionService.getPositionExperience(position);
+        LinkedHashMap<String, List<Map>> hashMap = positionExperience.stream()
+                .collect(Collectors.groupingBy(e -> e.get("POSITION").toString(), LinkedHashMap::new, Collectors.toList()));
+        for (Map.Entry<String, List<Map>> stringListEntry : hashMap.entrySet()) {
+            for (Map map : stringListEntry.getValue()) {
+                map.remove("POSITION");
+            }
+        }
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (Map.Entry<String, List<Map>> stringListEntry : hashMap.entrySet()) {
+            Map<String,Object> objectMap = new LinkedHashMap<>();
+            objectMap.put("name",stringListEntry.getKey());
+            for (int j = 0;j < allExperience.size();j++) {
+                String s = allExperience.get(j);
+                int i = 0;
+                for (;i < stringListEntry.getValue().size();i++){
+                    if (s.equals(stringListEntry.getValue().get(i).get("EXPERIENCE_SECTION"))){
+                        break;
+                    }
+                }
+                if (i >= stringListEntry.getValue().size()){
+                    Map<String,Object> newMap = new LinkedHashMap<>();
+                    newMap.put("EXPERIENCE_SECTION",s);
+                    newMap.put("WORK_NUM",0);
+                    stringListEntry.getValue().add(j,newMap);
+                }
+            }
+            List newList = new ArrayList();
+            for (Map map : stringListEntry.getValue()) {
+                newList.add(map.get("WORK_NUM"));
+            }
+            objectMap.put("value",newList);
+            mapList.add(objectMap);
+        }
+
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("name",allExperience);
+        map.put("data",mapList);
+        return map;
+
+    }
+
+    @PostMapping("/getCityByPosition")
+    public Map<String,Object> getCityByPosition(@RequestParam(value = "position", required = false) ArrayList<String> position){
+        if (position == null || position.size() == 0){
+            Map<String,Object> returnMap = new LinkedHashMap<>();
+            returnMap.put("code",404);
+            returnMap.put("message","请输入岗位列表");
+            return returnMap;
+        }
+        List<Map> cityByPosition = positionService.getCityByPosition(position);
+
+        List list = new ArrayList();
+
+        for (Map map : cityByPosition) {
+            Map<String,Object> newMap = new LinkedHashMap<>();
+            newMap.put("name",map.get("POSITION"));
+            newMap.put("city",map.get("CITY"));
+            newMap.put("value",map.get("WORK_NUM"));
+            list.add(newMap);
+        }
+
+        Map<String,Object> map = new LinkedHashMap<>();
+
+        map.put("data",list);
 
         return map;
 

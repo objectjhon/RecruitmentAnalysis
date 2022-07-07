@@ -1,6 +1,8 @@
 package com.jhon.recruitmentanalysis.service;
 
 import com.jhon.recruitmentanalysis.pojo.PositionSalary;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -21,5 +23,7 @@ public interface PositionSalaryService {
     Map<String,Object> getHighestSalaryPosition(String year,String month);
 
     Map<String,Object> getHighestSalaryPositionByCity(String year,String month,List<String> city);
+
+    List<Map> getPositionBySalary(BigDecimal minSalary,BigDecimal maxSalary);
 
 }

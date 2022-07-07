@@ -46,6 +46,35 @@ public class PositionKeyController {
 
     }
 
+
+    @PostMapping("/getSomeKeyValue")
+    public Map<String, Object> getSomeKeyValue(){
+
+        List<Map<String,Object>> allKeyValue = positionKeyService.getAllKeyValue();
+
+        List<Map> mapList = new ArrayList<>();
+
+        for (Map<String, Object> stringIntegerMap : allKeyValue) {
+            Map<String, Object> map1 = new LinkedHashMap<>();
+            map1.put("name",stringIntegerMap.get("KEYWORD"));
+            map1.put("value",stringIntegerMap.get("KEYWORD_COUNT"));
+            mapList.add(map1);
+        }
+
+        List<Map> collect = mapList.stream().
+                sorted((h1, h2) -> ((Long) h2.get("value")).compareTo((Long) h1.get("value"))).limit(10).collect(Collectors.toList());
+
+        Map<String,Object> map = new LinkedHashMap<>();
+
+        map.put("max",collect.get(0).get("value"));
+
+        map.put("data",collect);
+
+        return map;
+
+    }
+
+
     //某岗位专业术语提到的次数
     @PostMapping("/getPositionKeyValue")
     public Map<String,Object> getPositionKeyValue(@RequestParam(value = "limit", required = false) Integer limit,
@@ -157,15 +186,42 @@ public class PositionKeyController {
             objectMap.put("keyword",keyword);
             list.add(objectMap);
         }
-
         Map<String,Object> map = new LinkedHashMap<>();
         Map<String,Object> newMap = new LinkedHashMap();
         newMap.put("keywordlist",allKey);
         newMap.put("positionKeyword",list);
         map.put("data",newMap);
-
         return map;
+    }
 
+    @PostMapping("/getKeyWordBySalary")
+    public Map<String,Object> getKeyWordBySalary(@RequestParam(value = "minSalary", required = false) BigDecimal minSalary,
+                                                 @RequestParam(value = "maxSalary", required = false) BigDecimal maxSalary){
+        if (minSalary == null){
+            Map<String,Object> returnMap = new LinkedHashMap<>();
+            returnMap.put("code",404);
+            returnMap.put("message","请输入最低薪资");
+            return returnMap;
+        }
+        if (maxSalary == null){
+            Map<String,Object> returnMap = new LinkedHashMap<>();
+            returnMap.put("code",404);
+            returnMap.put("message","请输入最高薪资");
+            return returnMap;
+        }
+        String salary = minSalary+"-"+maxSalary;
+        List<Map> keyWordBySalary = positionKeyService.getKeyWordBySalary(salary);
+        List<Map> list = new ArrayList();
+        for (Map map : keyWordBySalary) {
+            Map newMap = new LinkedHashMap();
+            newMap.put("name",map.get("KEYWORD"));
+            newMap.put("value",map.get("KEYWORD_COUNT"));
+            list.add(newMap);
+        }
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("max",list.get(0).get("value"));
+        map.put("data",list);
+        return map;
     }
 
 }

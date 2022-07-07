@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhon.recruitmentanalysis.mapper.CityEducationMapper">
+
+    <select id="getCityEducation" resultType="map">
+        SELECT
+            CAST(EDUCATION_BACKGROUND AS VARCHAR) AS EDUCATION_BACKGROUND,
+            COUNT(*) AS EDUCATION_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(EDUCATION_BACKGROUND AS VARCHAR) != ''
+        GROUP BY CAST(EDUCATION_BACKGROUND AS VARCHAR)
+    </select>
+
+    <select id="getCityEducationByCity" resultType="map">
+        SELECT
+            CAST(EDUCATION_BACKGROUND AS VARCHAR) AS EDUCATION_BACKGROUND,
+            COUNT(*) AS EDUCATION_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(EDUCATION_BACKGROUND AS VARCHAR) != ''
+        AND CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        GROUP BY CAST(EDUCATION_BACKGROUND AS VARCHAR)
+    </select>
+
+    <select id="getEducationBySalary" resultType="map">
+        SELECT
+            CAST(EDUCATION_BACKGROUND AS VARCHAR) AS EDUCATION_BACKGROUND,
+            COUNT(*) AS EDUCATION_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(EDUCATION_BACKGROUND AS VARCHAR) != ''
+        AND SALARY_MIN &gt;= #{minSalary} and SALARY_MAX &lt;= #{maxSalary}
+        GROUP BY CAST(EDUCATION_BACKGROUND AS VARCHAR)
+    </select>
+
+    <select id="getCityBySalary" resultType="map">
+        SELECT
+            CAST(CITY AS VARCHAR) AS CITY,
+            COUNT(*) AS CITY_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(CITY AS VARCHAR) != '市'
+        AND SALARY_MIN &gt;= #{minSalary} and SALARY_MAX &lt;= #{maxSalary}
+        GROUP BY CAST(CITY AS VARCHAR)
+        ORDER BY CITY_NUM DESC LIMIT 10
+    </select>
+
+    <select id="getPositionNumByCity" resultType="map">
+        SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            COUNT(*) AS POSITION_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY POSITION_NUM DESC LIMIT 10
+    </select>
+
+    <select id="getPositionNumByCityList" resultType="map">
+        SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            COUNT(*) AS POSITION_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE CAST(CITY AS VARCHAR) IN
+        <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY POSITION_NUM DESC LIMIT 10
+    </select>
+
+</mapper>

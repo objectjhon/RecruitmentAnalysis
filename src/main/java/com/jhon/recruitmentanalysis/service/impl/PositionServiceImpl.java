@@ -33,4 +33,29 @@ public class PositionServiceImpl implements PositionService {
         return positionMapper.getCountByPositionDate(position,city);
     }
 
+    @Override
+    public List<String> getAllEducation() {
+        return positionMapper.getAllEducation();
+    }
+
+    @Override
+    public List<Map> getPositionEducation(List<String> position) {
+        return positionMapper.getPositionEducation(position);
+    }
+
+    @Override
+    public List<String> getAllExperience() {
+        return positionMapper.getAllExperience();
+    }
+
+    @Override
+    public List<Map> getPositionExperience(List<String> position) {
+        return positionMapper.getPositionExperience(position);
+    }
+
+    @Override
+    public List<Map> getCityByPosition(List<String> position) {
+        return positionMapper.getCityByPosition(position);
+    }
+
 }

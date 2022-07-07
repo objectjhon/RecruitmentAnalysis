@@ -138,4 +138,16 @@
         ORDER BY SALARY_MAX DESC
     </select>
 
+    <select id="getPositionBySalary" resultType="map">
+        SELECT
+            CAST(POSITION AS VARCHAR) AS POSITION,
+            COUNT(*) AS POSITION_NUM
+        FROM RECRUITMENT_ANALYSIS.ETL_DATA
+        WHERE SALARY_MIN != -1 AND SALARY_MAX != -1
+        AND SALARY_MIN &gt;= #{minSalary} and SALARY_MAX &lt;= #{maxSalary}
+        GROUP BY CAST(POSITION AS VARCHAR)
+        ORDER BY POSITION_NUM DESC
+        LIMIT 5
+    </select>
+
 </mapper>

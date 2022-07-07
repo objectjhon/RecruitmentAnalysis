@@ -19,4 +19,14 @@ public interface PositionService {
 
     List<Map<String,Object>> getCountByPositionDate(List<String> position,List<String> city);
 
+    List<String> getAllEducation();
+
+    List<Map> getPositionEducation(List<String> position);
+
+    List<String> getAllExperience();
+
+    List<Map> getPositionExperience(List<String> position);
+
+    List<Map> getCityByPosition(List<String> position);
+
 }

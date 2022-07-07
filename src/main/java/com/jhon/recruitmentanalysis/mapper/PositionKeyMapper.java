@@ -31,4 +31,6 @@ public interface PositionKeyMapper {
 
     List<Map<String,Object>> getKeyByPosition(@Param("position") List<String> position);
 
+    List<Map> getKeyWordBySalary(@Param("salary") String salary);
+
 }

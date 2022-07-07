@@ -15,5 +15,9 @@ public class Position {
     private String keywords;
     private BigDecimal salaryMin;
     private BigDecimal salaryMax;
+    private String companyType;
+    private String companyScale;
+    private String addressDetail;
+    private String treatment;
 
 }

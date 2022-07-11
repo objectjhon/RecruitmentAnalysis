@@ -7,11 +7,11 @@
             CAST(YEAR AS VARCHAR) AS YEAR,
             CAST(MONTH AS VARCHAR) AS MONTH,
             CAST(POSITION AS VARCHAR) AS POSITION,
-            MAX(SALARY_MAX) AS SALARY_MAX,
-            MIN(SALARY_MIN) AS SALARY_MIN,
-            (MAX(SALARY_MAX)+MIN(SALARY_MIN))/2 AS SALARY_AVG
+            AVG(SALARY_MAX) AS SALARY_MAX,
+            AVG(SALARY_MIN) AS SALARY_MIN,
+            (AVG(SALARY_MAX)+AVG(SALARY_MIN))/2 AS SALARY_AVG
         FROM RECRUITMENT_ANALYSIS.DATA
-        WHERE SALARY_MIN != -1
+        WHERE SALARY_MIN != -1 AND SALARY_MAX != -1
         <if test="position != null">
             AND CAST(POSITION AS VARCHAR) = #{position}
         </if>
@@ -24,11 +24,11 @@
             CAST(YEAR AS VARCHAR) AS YEAR,
             CAST(MONTH AS VARCHAR) AS MONTH,
             CAST(POSITION AS VARCHAR) AS POSITION,
-            MAX(SALARY_MAX) AS SALARY_MAX,
-            MIN(SALARY_MIN) AS SALARY_MIN,
-            (MAX(SALARY_MAX)+MIN(SALARY_MIN))/2 AS SALARY_AVG
+            AVG(SALARY_MAX) AS SALARY_MAX,
+            AVG(SALARY_MIN) AS SALARY_MIN,
+            (AVG(SALARY_MAX)+AVG(SALARY_MIN))/2 AS SALARY_AVG
         FROM RECRUITMENT_ANALYSIS.DATA
-        WHERE SALARY_MIN != -1 AND CAST(CITY AS VARCHAR) IN
+        WHERE SALARY_MIN != -1 AND SALARY_MAX != -1 AND CAST(CITY AS VARCHAR) IN
         <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
             #{city}
         </foreach>
@@ -78,9 +78,9 @@
             CAST(YEAR AS VARCHAR) AS YEAR,
             CAST(MONTH AS VARCHAR) AS MONTH,
             CAST(POSITION AS VARCHAR) AS POSITION,
-            MAX(SALARY_MAX) AS SALARY_MAX
+            AVG(SALARY_MAX) AS SALARY_MAX
         FROM RECRUITMENT_ANALYSIS.DATA
-        WHERE SALARY_MAX != -1
+        WHERE SALARY_MIN != -1 AND SALARY_MAX != -1
         GROUP BY CAST(YEAR AS VARCHAR),CAST(MONTH AS VARCHAR),CAST(POSITION AS VARCHAR)
         ORDER BY YEAR ASC,MONTH ASC,SALARY_MAX DESC
     </select>
@@ -90,9 +90,9 @@
             CAST(YEAR AS VARCHAR) AS YEAR,
             CAST(MONTH AS VARCHAR) AS MONTH,
             CAST(POSITION AS VARCHAR) AS POSITION,
-            MAX(SALARY_MAX) AS SALARY_MAX
+            AVG(SALARY_MAX) AS SALARY_MAX
         FROM RECRUITMENT_ANALYSIS.DATA
-        WHERE SALARY_MAX != -1 AND CAST(CITY AS VARCHAR) IN
+        WHERE SALARY_MIN != -1 AND SALARY_MAX != -1 AND CAST(CITY AS VARCHAR) IN
         <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">
             #{city}
         </foreach>
@@ -104,7 +104,7 @@
         SELECT
             TOP 1
             CAST(POSITION AS VARCHAR) AS POSITION,
-            MAX(SALARY_MAX) AS SALARY_MAX
+            AVG(SALARY_MAX) AS SALARY_MAX
         FROM RECRUITMENT_ANALYSIS.DATA
         <where>
             <if test="year != null">
@@ -122,7 +122,7 @@
         SELECT
             TOP 1
             CAST(POSITION AS VARCHAR) AS POSITION,
-            MAX(SALARY_MAX) AS SALARY_MAX
+            AVG(SALARY_MAX) AS SALARY_MAX
         FROM RECRUITMENT_ANALYSIS.DATA
         WHERE CAST(CITY AS VARCHAR) IN
         <foreach collection="city" item="city" index="index" open="(" close=")" separator=",">

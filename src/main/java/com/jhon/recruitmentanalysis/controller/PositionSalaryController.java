@@ -160,7 +160,8 @@ public class PositionSalaryController {
             List list = new ArrayList();
             list.add(map.get("YEAR")+"-"+map.get("MONTH"));
             list.add(map.get("POSITION"));
-            list.add(map.get("SALARY_MAX"));
+            DecimalFormat decimalFormat = new DecimalFormat("0.00");
+            list.add(decimalFormat.format(map.get("SALARY_MAX")));
             groupList.add(list);
         }
 
@@ -213,7 +214,8 @@ public class PositionSalaryController {
 
         Map map = new LinkedHashMap();
 
-        map.put(highestSalaryPosition.get("POSITION"),highestSalaryPosition.get("SALARY_MAX"));
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        map.put(highestSalaryPosition.get("POSITION"),decimalFormat.format(highestSalaryPosition.get("SALARY_MAX")));
 
         return map;
 

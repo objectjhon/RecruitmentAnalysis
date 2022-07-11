@@ -17,10 +17,10 @@ class RecruitmentAnalysisApplicationTests {
     @Test
     void contextLoads() {
 
-        List<User> allUser = userMapper.getAllUser("");
-        for (User user : allUser) {
-            System.out.println(user.toString());
-        }
+//        List<User> allUser = userMapper.getAllUser("");
+//        for (User user : allUser) {
+//            System.out.println(user.toString());
+//        }
 
 
     }

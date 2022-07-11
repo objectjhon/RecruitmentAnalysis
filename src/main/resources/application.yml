@@ -7,8 +7,8 @@ spring:
   datasource:
     driverClassName: dm.jdbc.driver.DmDriver
     #url: jdbc:dm://www.jhon.top:5236
-#    url: jdbc:dm://l4ou1kd0.njcylg.svc:5236
-    url: jdbc:dm://119.96.188.91:30980
+    url: jdbc:dm://l4ou1kd0.njcylg.svc:5236
+#    url: jdbc:dm://119.96.188.91:30980
     username: SYSDBA
     password: SYSDBA
     druid:
